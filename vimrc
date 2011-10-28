@@ -44,9 +44,18 @@ set complete=.,w,b,t
 " allowed to go in there (ie. the "must save first" error doesn't come up)
 set hidden
 
+" color scheme
+colorscheme Mustang
+
 " perltidy
 autocmd BufRead,BufNewFile *.pl,*.plx,*.pm command! -range=% -nargs=* Tidy <line1>,<line2>!perltidy -pbp -l=100
 autocmd BufRead,BufNewFile *.pl,*.plx,*.pm noremap <F5> :Tidy<CR>
+
+" folding
+let perl_fold = 1
+set foldcolumn=0
+set foldlevelstart=20
+noremap <silent> <Leader>z za
 
 " mappings
 " insert newline and leave insert mode
@@ -66,6 +75,10 @@ noremap <silent> <Leader>mk <C-W>K
 noremap <silent> <Leader>mh <C-W>H
 noremap <silent> <Leader>mj <C-W>J
 
+" Maps for tab navigation
+noremap <silent> <Leader>n :tabnext<CR>
+noremap <silent> <Leader>p :tabprev<CR>
+
 " Alright... let's try this out
 imap jj <esc>
 
@@ -79,7 +92,6 @@ Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/syntastic'
 Bundle 'Raimondi/delimitMate'
-Bundle 'ervandew/supertab'
 Bundle 'vcscommand.vim'
 
 syntax on                       " enable syntax highlighting
