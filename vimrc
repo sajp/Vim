@@ -2,8 +2,6 @@ set nocompatible               " be iMproved
 filetype off                   " required for Vundle, turn on later
 
 set nu                          " set line numbers
-set incsearch
-set ignorecase                  " Ignore case when searching
 set smartcase
 set scrolloff=4
 set wildmode=longest,list
@@ -14,19 +12,20 @@ set history=1000                " how many lines of history to remember
 set showmode
 " Set text wrapping toggles
 nmap  <Leader>w :set invwrap<CR>:set wrap?<CR>
+
 " give me more colours
 set term=xterm-256color
 
 " Let's make it easy to edit this file (mnemonic for the key sequence is
 " 'e'dit 'v'imrc)
-nmap <silent> <Leader>ev :e $MYVIMRC<cr>
+nnoremap <Leader>ev :e $MYVIMRC<cr>
 
 " And to source this file as well (mnemonic for the key sequence is
 " 's'ource 'v'imrc)
-nmap <silent> <Leader>sv :so $MYVIMRC<cr>
+nnoremap <Leader>sv :so $MYVIMRC<cr>
 
 " Set the status line the way i like it
-set stl=%f\ %m\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n\ [%b][0x%B]
+set stl=%f\ %m\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n\
 " tell VIM to always put a status line in, even if there is only one window
 set laststatus=2
 
@@ -36,6 +35,9 @@ set shiftwidth=4                " use indents of 4 spaces
 set expandtab                   " tabs are spaces, not tabs
 set tabstop=4                   " an indentation every four columns
 set softtabstop=4               " let backspace delete indent
+
+" Ruby
+autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 
 " auto complete options for [Ctrl]-n and [Ctrl]-p
 set complete=.,w,b,t
@@ -53,8 +55,9 @@ autocmd BufRead,BufNewFile *.pl,*.plx,*.pm noremap <F5> :Tidy<CR>
 
 " folding
 let perl_fold = 1
+let ruby_fold = 1
 set foldcolumn=0
-set foldlevelstart=20
+set foldlevelstart=1
 noremap <silent> <Leader>z za
 
 " mappings
@@ -78,6 +81,10 @@ noremap <silent> <Leader>mj <C-W>J
 " Maps for tab navigation
 noremap <silent> <Leader>n :tabnext<CR>
 noremap <silent> <Leader>p :tabprev<CR>
+
+" swap ; and : around
+nnoremap ; :
+nnoremap : ;
 
 " Alright... let's try this out
 imap jj <esc>
