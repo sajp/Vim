@@ -62,7 +62,7 @@ noremap <silent> <Leader>z za
 
 " mappings
 " insert newline and leave insert mode
-map <F8> o<Esc>
+noremap <Leader>o o<Esc>
 " indent line
 map <Tab> >>
 " outdent line
@@ -97,9 +97,13 @@ call vundle#rc()
 " required! 
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
+Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/syntastic'
 Bundle 'Raimondi/delimitMate'
 Bundle 'vcscommand.vim'
+Bundle "surround.vim"
+Bundle "repeat.vim"
+Bundle 'tpope/vim-fugitive'
 
 syntax on                       " enable syntax highlighting
 filetype on                     " enable vim filetype detection
@@ -107,7 +111,7 @@ filetype plugin on
 filetype indent on
 
 " Nerdtree toggle
-map <F2> :NERDTreeToggle<CR>
+noremap <F2> :NERDTreeToggle<CR>
 let NERDTreeShowBookmarks=1     " Show the bookmarks table on startup
 
 " Syntastic
@@ -121,3 +125,5 @@ let g:syntastic_auto_loc_list=1              " Error window auto closes when no 
 let delimitMate_expand_space = 1            " expand <space> inside empty delimiters
 let delimitMate_expand_cr = 1                " expand <cr> inside empty delimiters
 
+" vcscommand
+let g:VCSCommandMapPrefix='<Leader>x' " because Nerdcommenter users <Leader>c as well
