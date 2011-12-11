@@ -29,6 +29,10 @@ set stl=%f\ %m\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n\
 " tell VIM to always put a status line in, even if there is only one window
 set laststatus=2
 
+" highlight searching
+set hlsearch
+nnoremap <Leader>a :nohls<CR>
+
 " Tabs / Indents
 set autoindent                  " indent at the same level of the previous line
 set shiftwidth=4                " use indents of 4 spaces
