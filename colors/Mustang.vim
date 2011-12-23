@@ -55,5 +55,5 @@ hi Todo         guifg=#000000 guibg=#e6ea50 gui=italic
 " hi perlStatementControl guifg=#7e8aa2 gui=none ctermfg=220
 " hi perlRepeat guifg=#7e8aa2 gui=none ctermfg=220
 
-hi Search     guifg=white	guibg=NONE	cterm=NONE	gui=underline
+hi Search     guifg=white	guibg=NONE	cterm=NONE	gui=underline ctermfg=white ctermbg=022
 
