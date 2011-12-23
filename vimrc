@@ -62,15 +62,11 @@ let perl_fold = 1
 let ruby_fold = 1
 set foldcolumn=0
 set foldlevelstart=1
-noremap <silent> <Leader>z za
+nnoremap <silent> <Leader>z za
 
 " mappings
 " insert newline and leave insert mode
 noremap <Leader>o o<Esc>
-" indent line
-map <Tab> >>
-" outdent line
-map <S-Tab> <<
 
 " disable arrow keys to force me to use hjkl and stay in command mode
 inoremap  <Up>     <NOP>
@@ -100,8 +96,8 @@ noremap <silent> <Leader>p :tabprev<CR>
 nnoremap ; :
 nnoremap : ;
 
-" Alright... let's try this out
 imap jj <esc>
+
 
 "PLUGINS
 set rtp+=~/.vim/bundle/vundle/
@@ -118,6 +114,11 @@ Bundle 'vcscommand.vim'
 Bundle "surround.vim"
 Bundle "repeat.vim"
 Bundle 'tpope/vim-fugitive'
+" snipmate plus dependencies:
+Bundle "git://github.com/MarcWeber/vim-addon-mw-utils.git"
+Bundle "git://github.com/tomtom/tlib_vim.git"
+Bundle "git://github.com/honza/snipmate-snippets.git"
+Bundle "git://github.com/garbas/vim-snipmate.git"
 
 syntax on                       " enable syntax highlighting
 filetype on                     " enable vim filetype detection
@@ -137,7 +138,10 @@ let g:syntastic_auto_loc_list=1              " Error window auto closes when no 
 
 " delimitMate Setup
 let delimitMate_expand_space = 1            " expand <space> inside empty delimiters
-let delimitMate_expand_cr = 1                " expand <cr> inside empty delimiters
+let delimitMate_expand_cr = 1               " expand <cr> inside empty delimiters
+" stop snipmate overiding delimimate shift tab behaviour
+imap <S-Tab> <Plug>delimitMateS-Tab
 
 " vcscommand
 let g:VCSCommandMapPrefix='<Leader>x' " because Nerdcommenter users <Leader>c as well
+
