@@ -5,33 +5,26 @@ set nu                          " set line numbers
 set smartcase
 set scrolloff=4
 set wildmode=longest,list
+set encoding=utf-8
 
 set cpoptions+=$                " Show $ sign when changing
 set mouse=a
 set history=1000                " how many lines of history to remember
 set showmode
-" Set text wrapping toggles
-nmap  <Leader>w :set invwrap<CR>:set wrap?<CR>
+
+" default printer
+set pdev=g322pc
 
 " give me more colours
 set term=xterm-256color
 
-" Let's make it easy to edit this file (mnemonic for the key sequence is
-" 'e'dit 'v'imrc)
-nnoremap <Leader>ev :e $MYVIMRC<cr>
-
-" And to source this file as well (mnemonic for the key sequence is
-" 's'ource 'v'imrc)
-nnoremap <Leader>sv :so $MYVIMRC<cr>
-
 " Set the status line the way i like it
-set stl=%f\ %m\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n\
+set stl=%f\ %m\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n\ %{fugitive#statusline()}
 " tell VIM to always put a status line in, even if there is only one window
 set laststatus=2
 
 " highlight searching
 set hlsearch
-nnoremap <Leader>a :nohls<CR>
 
 " Tabs / Indents
 set autoindent                  " indent at the same level of the previous line
@@ -39,6 +32,11 @@ set shiftwidth=4                " use indents of 4 spaces
 set expandtab                   " tabs are spaces, not tabs
 set tabstop=4                   " an indentation every four columns
 set softtabstop=4               " let backspace delete indent
+
+" stop splitting words when wrapping lines
+set linebreak
+" set backspace behaviour in insert mode
+set backspace=2
 
 " Ruby
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
@@ -51,7 +49,12 @@ set complete=.,w,b,t
 set hidden
 
 " color scheme
-colorscheme Mustang
+
+if &diff
+    colorscheme morning
+else
+    colorscheme Mustang
+endif
 
 " perltidy
 autocmd BufRead,BufNewFile *.pl,*.plx,*.pm command! -range=% -nargs=* Tidy <line1>,<line2>!perltidy -pbp -l=100
@@ -64,10 +67,29 @@ set foldcolumn=0
 set foldlevelstart=1
 nnoremap <silent> <Leader>z za
 
-" mappings
+"
+" MAPPINGS
+"
+
 " insert newline and leave insert mode
 noremap <Leader>o o<Esc>
+" delete whitespace and end of lines
+noremap <Leader>ws :%s/\s\+$//<CR>
 
+" Set text wrapping toggles
+nmap  <Leader>w :set invwrap<CR>:set wrap?<CR>
+
+" reselect just pasted text
+nnoremap <leader>v V`]
+
+" Let's make it easy to edit this file (mnemonic for the key sequence is 'e'dit 'v'imrc
+nnoremap <Leader>ev :e $MYVIMRC<cr>
+
+" And to source this file as well (mnemonic for the key sequence is 's'ource 'v'imrc)
+nnoremap <Leader>sv :so $MYVIMRC<cr>
+
+" turn of search highlighting
+nnoremap <Leader>a :nohls<CR>
 " disable arrow keys to force me to use hjkl and stay in command mode
 inoremap  <Up>     <NOP>
 inoremap  <Down>   <NOP>
@@ -98,8 +120,31 @@ nnoremap : ;
 
 imap jj <esc>
 
+" always move down one screen line
+noremap j gj
+noremap k gk
 
+" FuzzyFinder
+noremap <Leader>b :FufBuffer<CR>
+noremap <Leader>f :FufFile<CR>
+
+" Toggle Syntastic
+noremap <F4> :SyntasticToggleMode<CR>
+
+" Nerdtree toggle
+noremap <F2> :NERDTreeToggle<CR>
+
+" Tabular
+if exists(":Tabularize")
+    nmap <Leader>t :Tabularize /=><CR>
+    vmap <Leader>t :Tabularize /=><CR>
+endif
+        
+
+
+"
 "PLUGINS
+"
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
@@ -114,6 +159,14 @@ Bundle 'vcscommand.vim'
 Bundle "surround.vim"
 Bundle "repeat.vim"
 Bundle 'tpope/vim-fugitive'
+"Bundle "Command-T"
+Bundle "godlygeek/tabular"
+Bundle "mileszs/ack.vim"
+Bundle "L9"
+Bundle "FuzzyFinder"
+Bundle "Lokaltog/vim-powerline"
+"Bundle "Gundo" - need version 7.3
+
 " snipmate plus dependencies:
 Bundle "git://github.com/MarcWeber/vim-addon-mw-utils.git"
 Bundle "git://github.com/tomtom/tlib_vim.git"
@@ -125,8 +178,7 @@ filetype on                     " enable vim filetype detection
 filetype plugin on
 filetype indent on
 
-" Nerdtree toggle
-noremap <F2> :NERDTreeToggle<CR>
+" NERDTree
 let NERDTreeShowBookmarks=1     " Show the bookmarks table on startup
 
 " Syntastic
@@ -144,4 +196,10 @@ imap <S-Tab> <Plug>delimitMateS-Tab
 
 " vcscommand
 let g:VCSCommandMapPrefix='<Leader>x' " because Nerdcommenter users <Leader>c as well
+
+" Powerline
+let g:Powerline_symbols="unicode"
+
+" Gundo
+"nnoremap <F3> :GundoToggle<CR>
 
