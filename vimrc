@@ -18,8 +18,6 @@ set pdev=g322pc
 " give me more colours
 set term=xterm-256color
 
-" Set the status line the way i like it
-set stl=%f\ %m\ Line:%l/%L[%p%%]\ Col:%v\ Buf:#%n\ %{fugitive#statusline()}
 " tell VIM to always put a status line in, even if there is only one window
 set laststatus=2
 
@@ -49,7 +47,6 @@ set complete=.,w,b,t
 set hidden
 
 " color scheme
-
 if &diff
     colorscheme morning
 else
