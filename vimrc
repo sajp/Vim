@@ -159,10 +159,9 @@ Bundle "repeat.vim"
 Bundle 'tpope/vim-fugitive'
 Bundle "godlygeek/tabular"
 Bundle "mileszs/ack.vim"
-"Bundle "L9"
-"Bundle "FuzzyFinder"
 Bundle "Lokaltog/vim-powerline"
 Bundle "kien/ctrlp.vim"
+Bundle "spiiph/vim-space"
 "Bundle "Gundo" - need version 7.3
 
 " snipmate plus dependencies:
