@@ -121,9 +121,10 @@ imap jj <esc>
 noremap j gj
 noremap k gk
 
-" FuzzyFinder
-noremap <Leader>b :FufBuffer<CR>
-noremap <Leader>f :FufFile<CR>
+" Ctrlp
+noremap <Leader>b :CtrlPBuffer<CR>
+noremap <Leader>f :CtrlPCurWD<CR>
+noremap <Leader>r :CtrlPMRU<CR>
 
 " Toggle Syntastic
 noremap <F4> :SyntasticToggleMode<CR>
@@ -156,12 +157,12 @@ Bundle 'vcscommand.vim'
 Bundle "surround.vim"
 Bundle "repeat.vim"
 Bundle 'tpope/vim-fugitive'
-"Bundle "Command-T"
 Bundle "godlygeek/tabular"
 Bundle "mileszs/ack.vim"
-Bundle "L9"
-Bundle "FuzzyFinder"
+"Bundle "L9"
+"Bundle "FuzzyFinder"
 Bundle "Lokaltog/vim-powerline"
+Bundle "kien/ctrlp.vim"
 "Bundle "Gundo" - need version 7.3
 
 " snipmate plus dependencies:
@@ -196,6 +197,15 @@ let g:VCSCommandMapPrefix='<Leader>x' " because Nerdcommenter users <Leader>c as
 
 " Powerline
 let g:Powerline_symbols="unicode"
+
+" Ctrl-p
+"let g:ctrlp_custom_ignore = '\.git$\|\.svn$'
+let g:ctrlp_dotfiles = 1
+let g:ctrlp_max_files = 3000
+let g:ctrlp_max_depth = 10
+let g:ctrlp_open_new_file = 'v'
+let g:ctrlp_open_multiple_files = '3vr'
+
 
 " Gundo
 "nnoremap <F3> :GundoToggle<CR>
