@@ -121,11 +121,6 @@ map <silent> <Leader>sl <C-W>>
 noremap <silent> <Leader>n :tabnext<CR>
 noremap <silent> <Leader>p :tabprev<CR>
 
-" put these options in after dir to make them work again
-" swap ; and : around
-nnoremap ; :
-nnoremap : ;
-
 imap jj _
 imap kk $
 imap aa @
