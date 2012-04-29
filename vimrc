@@ -6,6 +6,7 @@ set smartcase
 set scrolloff=4
 set wildmode=longest,list
 set encoding=utf-8
+set wildignore+=*.swp,.git,*.svn
 
 set cpoptions+=$                " Show $ sign when changing
 set mouse=a
@@ -42,7 +43,7 @@ autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 " auto complete options for [Ctrl]-n and [Ctrl]-p
 set complete=.,w,b,t
 
-" Make sure that unsaved buffers that are to be put in the background are 
+" Make sure that unsaved buffers that are to be put in the background are
 " allowed to go in there (ie. the "must save first" error doesn't come up)
 set hidden
 
@@ -67,11 +68,14 @@ nnoremap <silent> <Leader>z za
 "
 " MAPPINGS
 "
+"
 
 " insert newline and leave insert mode
 noremap <Leader>o o<Esc>
 " delete whitespace and end of lines
 noremap <Leader>ws :%s/\s\+$//<CR>
+
+set pastetoggle=<F3>
 
 " Set text wrapping toggles
 nmap  <Leader>w :set invwrap<CR>:set wrap?<CR>
@@ -107,15 +111,24 @@ noremap <silent> <Leader>mk <C-W>K
 noremap <silent> <Leader>mh <C-W>H
 noremap <silent> <Leader>mj <C-W>J
 
+" Maps Alt-[h,j,k,l] to resizing a window split
+map <silent> <Leader>sh <C-W><
+map <silent> <Leader>sj <C-W>-
+map <silent> <Leader>sk <C-W>+
+map <silent> <Leader>sl <C-W>>
+
 " Maps for tab navigation
 noremap <silent> <Leader>n :tabnext<CR>
 noremap <silent> <Leader>p :tabprev<CR>
 
+" put these options in after dir to make them work again
 " swap ; and : around
 nnoremap ; :
 nnoremap : ;
 
-imap jj <esc>
+imap jj _
+imap kk $
+imap aa @
 
 " always move down one screen line
 noremap j gj
@@ -124,7 +137,6 @@ noremap k gk
 " Ctrlp
 noremap <Leader>b :CtrlPBuffer<CR>
 noremap <Leader>f :CtrlPCurWD<CR>
-noremap <Leader>r :CtrlPMRU<CR>
 
 " Toggle Syntastic
 noremap <F4> :SyntasticToggleMode<CR>
@@ -134,11 +146,9 @@ noremap <F2> :NERDTreeToggle<CR>
 
 " Tabular
 if exists(":Tabularize")
-    nmap <Leader>t :Tabularize /=><CR>
-    vmap <Leader>t :Tabularize /=><CR>
+    nmap <Leader>tb :Tabularize /=><CR>
+    vmap <Leader>tb :Tabularize /=><CR>
 endif
-        
-
 
 "
 "PLUGINS
@@ -147,7 +157,7 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle
-" required! 
+" required!
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
@@ -162,7 +172,9 @@ Bundle "mileszs/ack.vim"
 Bundle "Lokaltog/vim-powerline"
 Bundle "kien/ctrlp.vim"
 Bundle "spiiph/vim-space"
-"Bundle "Gundo" - need version 7.3
+Bundle "tpope/vim-markdown"
+Bundle "wikipedia.vim"
+Bundle "davidoc/taskpaper.vim"
 
 " snipmate plus dependencies:
 Bundle "git://github.com/MarcWeber/vim-addon-mw-utils.git"
@@ -175,21 +187,23 @@ filetype on                     " enable vim filetype detection
 filetype plugin on
 filetype indent on
 
+" stop snipmate overiding delimimate shift tab behaviour
+imap <S-Tab> <Plug>delimitMateS-Tab
+
 " NERDTree
 let NERDTreeShowBookmarks=1     " Show the bookmarks table on startup
+let NERDTreeQuitOnOpen=1        " Close nerd tree after opening a file
 
 " Syntastic
-set statusline+=%#warningmsg#                " Set statusline 
+set statusline+=%#warningmsg#                " Set statusline
 set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*                           
+set statusline+=%*
 let g:syntastic_enable_signs=1               " Use sign interface to mark errors
 let g:syntastic_auto_loc_list=1              " Error window auto closes when no errors, also auto opens when errors found
 
 " delimitMate Setup
 let delimitMate_expand_space = 1            " expand <space> inside empty delimiters
 let delimitMate_expand_cr = 1               " expand <cr> inside empty delimiters
-" stop snipmate overiding delimimate shift tab behaviour
-imap <S-Tab> <Plug>delimitMateS-Tab
 
 " vcscommand
 let g:VCSCommandMapPrefix='<Leader>x' " because Nerdcommenter users <Leader>c as well
@@ -198,14 +212,9 @@ let g:VCSCommandMapPrefix='<Leader>x' " because Nerdcommenter users <Leader>c as
 let g:Powerline_symbols="unicode"
 
 " Ctrl-p
-"let g:ctrlp_custom_ignore = '\.git$\|\.svn$'
 let g:ctrlp_dotfiles = 1
 let g:ctrlp_max_files = 3000
 let g:ctrlp_max_depth = 10
 let g:ctrlp_open_new_file = 'v'
 let g:ctrlp_open_multiple_files = '3vr'
-
-
-" Gundo
-"nnoremap <F3> :GundoToggle<CR>
 
