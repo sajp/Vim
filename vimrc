@@ -170,6 +170,8 @@ Bundle "spiiph/vim-space"
 Bundle "tpope/vim-markdown"
 Bundle "wikipedia.vim"
 Bundle "davidoc/taskpaper.vim"
+Bundle "Gundo"
+Bundle "benmills/vimux"
 
 " snipmate plus dependencies:
 Bundle "git://github.com/MarcWeber/vim-addon-mw-utils.git"
@@ -212,4 +214,9 @@ let g:ctrlp_max_files = 3000
 let g:ctrlp_max_depth = 10
 let g:ctrlp_open_new_file = 'v'
 let g:ctrlp_open_multiple_files = '3vr'
+
+
+" Gundo
+nnoremap <F6> :GundoToggle<CR>
+
 
