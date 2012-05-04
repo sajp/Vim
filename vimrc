@@ -65,6 +65,12 @@ set foldcolumn=0
 set foldlevelstart=1
 nnoremap <silent> <Leader>z za
 
+" Persistance Undo Keep undo history across sessions, by storing in file.
+"set undodir=~/.vim/backups
+"set undofile
+"set undolevels = 1000 "maximum number of changes that can be undone
+"set undoreload = 10000 "maximum number lines to save for undo on a buffer reload
+
 "
 " MAPPINGS
 "
@@ -145,6 +151,18 @@ if exists(":Tabularize")
     vmap <Leader>tb :Tabularize /=><CR>
 endif
 
+" CamelCaseMotion
+map W <Plug>CamelCaseMotion_w
+map B <Plug>CamelCaseMotion_b
+map E <Plug>CamelCaseMotion_e
+
+sunmap W
+sunmap B
+sunmap E
+
+"Yankring
+nnoremap <silent> <F10> :YRShow<CR>
+
 "
 "PLUGINS
 "
@@ -172,6 +190,9 @@ Bundle "wikipedia.vim"
 Bundle "davidoc/taskpaper.vim"
 Bundle "Gundo"
 Bundle "benmills/vimux"
+Bundle "Lokaltog/vim-easymotion"
+Bundle "bkad/CamelCaseMotion"
+Bundle "YankRing.vim"
 
 " snipmate plus dependencies:
 Bundle "git://github.com/MarcWeber/vim-addon-mw-utils.git"
@@ -218,5 +239,11 @@ let g:ctrlp_open_multiple_files = '3vr'
 
 " Gundo
 nnoremap <F6> :GundoToggle<CR>
+" open on the right so as not to compete with the nerdtree
+let g:gundo_right = 1
+" a little wider for wider screens
+let g:gundo_width = 60
 
+" Yankring
+let yankring_min_element_lenth=2
 
