@@ -24,6 +24,8 @@ set laststatus=2
 
 " highlight searching
 set hlsearch
+" incremental search
+set incsearch
 
 " Tabs / Indents
 set autoindent                  " indent at the same level of the previous line
@@ -73,7 +75,6 @@ nnoremap <silent> <Leader>z za
 
 "
 " MAPPINGS
-"
 "
 
 " insert newline and leave insert mode
@@ -127,10 +128,6 @@ map <silent> <Leader>sl <C-W>>
 noremap <silent> <Leader>n :tabnext<CR>
 noremap <silent> <Leader>p :tabprev<CR>
 
-imap jj _
-imap kk $
-imap aa @
-
 " always move down one screen line
 noremap j gj
 noremap k gk
@@ -150,15 +147,6 @@ if exists(":Tabularize")
     nmap <Leader>tb :Tabularize /=><CR>
     vmap <Leader>tb :Tabularize /=><CR>
 endif
-
-" CamelCaseMotion
-map W <Plug>CamelCaseMotion_w
-map B <Plug>CamelCaseMotion_b
-map E <Plug>CamelCaseMotion_e
-
-sunmap W
-sunmap B
-sunmap E
 
 "Yankring
 nnoremap <silent> <F10> :YRShow<CR>
@@ -185,14 +173,14 @@ Bundle "mileszs/ack.vim"
 Bundle "Lokaltog/vim-powerline"
 Bundle "kien/ctrlp.vim"
 Bundle "spiiph/vim-space"
-Bundle "tpope/vim-markdown"
-Bundle "wikipedia.vim"
-Bundle "davidoc/taskpaper.vim"
 Bundle "Gundo"
 Bundle "benmills/vimux"
 Bundle "Lokaltog/vim-easymotion"
-Bundle "bkad/CamelCaseMotion"
 Bundle "YankRing.vim"
+
+" Syntax Files
+Bundle "tpope/vim-markdown"
+Bundle "wikipedia.vim"
 
 " snipmate plus dependencies:
 Bundle "git://github.com/MarcWeber/vim-addon-mw-utils.git"
@@ -209,8 +197,8 @@ filetype indent on
 imap <S-Tab> <Plug>delimitMateS-Tab
 
 " NERDTree
-let NERDTreeShowBookmarks=1     " Show the bookmarks table on startup
-let NERDTreeQuitOnOpen=1        " Close nerd tree after opening a file
+let NERDTreeShowBookmarks=1                  " Show the bookmarks table on startup
+let NERDTreeQuitOnOpen=1                     " Close nerd tree after opening a file
 
 " Syntastic
 set statusline+=%#warningmsg#                " Set statusline
@@ -220,11 +208,11 @@ let g:syntastic_enable_signs=1               " Use sign interface to mark errors
 let g:syntastic_auto_loc_list=1              " Error window auto closes when no errors, also auto opens when errors found
 
 " delimitMate Setup
-let delimitMate_expand_space = 1            " expand <space> inside empty delimiters
-let delimitMate_expand_cr = 1               " expand <cr> inside empty delimiters
+let delimitMate_expand_space = 1             " expand <space> inside empty delimiters
+let delimitMate_expand_cr = 1                " expand <cr> inside empty delimiters
 
 " vcscommand
-let g:VCSCommandMapPrefix='<Leader>x' " because Nerdcommenter users <Leader>c as well
+let g:VCSCommandMapPrefix='<Leader>x'        " because Nerdcommenter users <Leader>c as well
 
 " Powerline
 let g:Powerline_symbols="unicode"
@@ -236,14 +224,12 @@ let g:ctrlp_max_depth = 10
 let g:ctrlp_open_new_file = 'v'
 let g:ctrlp_open_multiple_files = '3vr'
 
-
 " Gundo
 nnoremap <F6> :GundoToggle<CR>
-" open on the right so as not to compete with the nerdtree
+" open on the right
 let g:gundo_right = 1
 " a little wider for wider screens
 let g:gundo_width = 60
 
 " Yankring
 let yankring_min_element_lenth=2
-
