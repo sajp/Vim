@@ -3,15 +3,23 @@ filetype off                   " required for Vundle, turn on later
 
 set nu                          " set line numbers
 set smartcase
-set scrolloff=4
+set scrolloff=10
 set wildmode=longest,list
 set encoding=utf-8
-set wildignore+=*.swp,.git,*.svn
+set wildignore+=*.swp,.git,*.svn,cover_db
 
 set cpoptions+=$                " Show $ sign when changing
 set mouse=a
 set history=1000                " how many lines of history to remember
 set showmode
+
+set backupdir=~/.vim_backup
+
+" when selecting block in visual mode allow selection outside end of line
+set virtualedit=block
+
+" treat all numbers as decimals
+set nrformats=
 
 " default printer
 set pdev=g322pc
@@ -41,6 +49,7 @@ set backspace=2
 
 " Ruby
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType tt2 setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 
 " auto complete options for [Ctrl]-n and [Ctrl]-p
 set complete=.,w,b,t
@@ -91,10 +100,18 @@ nmap  <Leader>w :set invwrap<CR>:set wrap?<CR>
 nnoremap <leader>v V`]
 
 " Let's make it easy to edit this file (mnemonic for the key sequence is 'e'dit 'v'imrc
-nnoremap <Leader>ev :e $MYVIMRC<cr>
+nnoremap <Leader>ev :tabedit $MYVIMRC<cr>
 
 " And to source this file as well (mnemonic for the key sequence is 's'ource 'v'imrc)
 nnoremap <Leader>sv :so $MYVIMRC<cr>
+
+" open new vertical split
+nnoremap <silent> vv <C-w>v
+" open new horizontal split
+nnoremap <silent> ss <C-w>s
+" open new tab
+nnoremap <silent> tt :tabnew<CR>
+nnoremap <Leader>d :bd<CR>
 
 " turn of search highlighting
 nnoremap <Leader>a :nohls<CR>
@@ -151,6 +168,20 @@ endif
 "Yankring
 nnoremap <silent> <F10> :YRShow<CR>
 
+"Increment / decrement remap
+nnoremap <Leader>1 <C-a>
+nnoremap <Leader>2 <C-x>
+
+" make Y consistent with D and C
+nnoremap Y y$
+
+" Add folders to path
+set path+=~/workspace/LIMS2-Webapp/lib
+set path+=~/workspace/LIMS2-Exception/lib
+set path+=~/workspace/Eng-Seq-Builder/lib
+set path+=~/workspace/LIMS2-Utils/lib
+set path+=~/workspace/LIMS2-Tasks/lib
+
 "
 "PLUGINS
 "
@@ -174,13 +205,17 @@ Bundle "Lokaltog/vim-powerline"
 Bundle "kien/ctrlp.vim"
 Bundle "spiiph/vim-space"
 Bundle "Gundo"
-Bundle "benmills/vimux"
+"Bundle "benmills/vimux"
 Bundle "Lokaltog/vim-easymotion"
+Bundle "petdance/vim-perl"
 Bundle "YankRing.vim"
 
 " Syntax Files
 Bundle "tpope/vim-markdown"
 Bundle "wikipedia.vim"
+
+" Colour Schemes
+Bundle "altercation/vim-colors-solarized"
 
 " snipmate plus dependencies:
 Bundle "git://github.com/MarcWeber/vim-addon-mw-utils.git"
@@ -233,3 +268,22 @@ let g:gundo_width = 60
 
 " Yankring
 let yankring_min_element_lenth=2
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" RENAME CURRENT FILE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'))
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <Leader>rn :call RenameFile()<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" OPEN FILES IN DIRECTORY OF CURRENT FILE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <Leader>ed :edit <C-R>=expand("%:p:h") . "/"<CR>
