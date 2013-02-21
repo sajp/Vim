@@ -149,6 +149,12 @@ noremap <silent> <Leader>p :tabprev<CR>
 noremap j gj
 noremap k gk
 
+" function movements
+map [[ ?{<CR>w99[{ 
+map ][ /}<CR>b99]} 
+map ]] j0[[%/{<CR> 
+map [] k$][%?}<CR> 
+
 " Ctrlp
 noremap <Leader>b :CtrlPBuffer<CR>
 noremap <Leader>f :CtrlPCurWD<CR>
@@ -181,6 +187,8 @@ set path+=~/workspace/LIMS2-Exception/lib
 set path+=~/workspace/Eng-Seq-Builder/lib
 set path+=~/workspace/LIMS2-Utils/lib
 set path+=~/workspace/LIMS2-Tasks/lib
+set path+=~/workspace/htgt/lib
+set path+=~/workspace/htgt-qc/lib
 
 "
 "PLUGINS
@@ -209,6 +217,8 @@ Bundle "Gundo"
 Bundle "Lokaltog/vim-easymotion"
 Bundle "petdance/vim-perl"
 Bundle "YankRing.vim"
+Bundle 'mattn/webapi-vim'
+Bundle 'mattn/gist-vim'
 
 " Syntax Files
 Bundle "tpope/vim-markdown"
@@ -268,6 +278,10 @@ let g:gundo_width = 60
 
 " Yankring
 let yankring_min_element_lenth=2
+
+" Gist
+let g:gist_detect_filetype = 1
+let g:gist_post_private = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " RENAME CURRENT FILE
