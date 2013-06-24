@@ -12,3 +12,5 @@ Install Vundle:
 
 Run BundleInstall inside vim
 
+Custom Install instructions for vimproc
+https://github.com/Shougo/vimproc.vim
