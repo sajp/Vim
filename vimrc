@@ -2,9 +2,11 @@ set nocompatible               " be iMproved
 filetype off                   " required for Vundle, turn on later
 
 set nu                          " set line numbers
+set ignorecase
 set smartcase
 set scrolloff=10
 set wildmode=longest,list
+set wildmenu
 set encoding=utf-8
 set wildignore+=*.swp,.git,*.svn,cover_db
 
@@ -75,6 +77,9 @@ let ruby_fold = 1
 set foldcolumn=0
 set foldlevelstart=1
 nnoremap <silent> <Leader>z za
+
+" suffix
+set suffixesadd=.pm,.pl,.t
 
 " Persistance Undo Keep undo history across sessions, by storing in file.
 "set undodir=~/.vim/backups
@@ -149,18 +154,44 @@ noremap <silent> <Leader>p :tabprev<CR>
 noremap j gj
 noremap k gk
 
-" function movements
-map [[ ?{<CR>w99[{ 
-map ][ /}<CR>b99]} 
-map ]] j0[[%/{<CR> 
-map [] k$][%?}<CR> 
-
 " Ctrlp
-noremap <Leader>b :CtrlPBuffer<CR>
-noremap <Leader>f :CtrlPCurWD<CR>
+"noremap <Leader>b :CtrlPBuffer<CR>
+"noremap <Leader>f :CtrlPCurWD<CR>
 
-" Toggle Syntastic
-noremap <F4> :SyntasticToggleMode<CR>
+" Unite
+
+" search files in current dir, use project file to populate list ( e.g git svn )
+nnoremap <Leader>ff :Unite -buffer-name=files -start-insert file_rec/async:!<CR>
+" as above but search files manually
+nnoremap <Leader>fa :Unite -buffer-name=files -start-insert file_rec/async<CR>
+" search buffers
+nnoremap <Leader>fb :Unite -buffer-name=buffer buffer<CR>
+" search most recently user files
+nnoremap <Leader>fm :Unite -buffer-name=mru file_mru<CR>
+" resume Unite window
+nnoremap <Leader>fr :Unite -buffer-name=resume resume<CR>
+" search tabs
+nnoremap <Leader>ft :Unite -buffer-name=tabs -quick-match tab<CR>
+" Grep current directory - uses ack
+nnoremap <silent> <Leader>fg :<C-u>Unite -buffer-name=grep -vertical grep:.<CR>
+" search commands
+nnoremap <Leader>fc :Unite -buffer-name=commands command<CR>
+" search yank history
+nnoremap <Leader>fy :Unite -buffer-name=yank history/yank<CR>
+" Quickly switch lcd
+nnoremap <Leader>fd :<C-u>Unite -buffer-name=change-cwd -default-action=lcd directory_mru<CR>
+" Quick outline
+nnoremap <silent> <Leader>fo :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+
+
+" Custom mappings for the unite buffer
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  " Enable navigation with control-j and control-k in insert mode
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+endfunction
 
 " Nerdtree toggle
 noremap <F2> :NERDTreeToggle<CR>
@@ -189,6 +220,7 @@ set path+=~/workspace/LIMS2-Utils/lib
 set path+=~/workspace/LIMS2-Tasks/lib
 set path+=~/workspace/htgt/lib
 set path+=~/workspace/htgt-qc/lib
+set path+=~/workspace/Design-Creation/lib
 
 "
 "PLUGINS
@@ -201,7 +233,6 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/syntastic'
 Bundle 'Raimondi/delimitMate'
 Bundle 'vcscommand.vim'
 Bundle "surround.vim"
@@ -216,9 +247,12 @@ Bundle "Gundo"
 "Bundle "benmills/vimux"
 Bundle "Lokaltog/vim-easymotion"
 Bundle "petdance/vim-perl"
-Bundle "YankRing.vim"
 Bundle 'mattn/webapi-vim'
 Bundle 'mattn/gist-vim'
+Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/vimproc.vim'
+Bundle 'Shougo/unite-outline'
+Bundle 'SirVer/ultisnips'
 
 " Syntax Files
 Bundle "tpope/vim-markdown"
@@ -227,30 +261,32 @@ Bundle "wikipedia.vim"
 " Colour Schemes
 Bundle "altercation/vim-colors-solarized"
 
-" snipmate plus dependencies:
-Bundle "git://github.com/MarcWeber/vim-addon-mw-utils.git"
-Bundle "git://github.com/tomtom/tlib_vim.git"
-Bundle "git://github.com/honza/snipmate-snippets.git"
-Bundle "git://github.com/garbas/vim-snipmate.git"
-
 syntax on                       " enable syntax highlighting
 filetype on                     " enable vim filetype detection
 filetype plugin on
 filetype indent on
 
-" stop snipmate overiding delimimate shift tab behaviour
-imap <S-Tab> <Plug>delimitMateS-Tab
+" ultisnips
+let g:UltiSnipsUsePythonVersion = 2
+let g:UltiSnipsSnippetsDir="~/.vim/snippets"
+let g:UltiSnipsSnippetDirectories=["snippets"]
+
+" Unite
+let g:unite_source_history_yank_enable = 1
+call unite#filters#matcher_default#use(['matcher_regexp'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+let g:unite_split_rule = "botright"
+" Search using ack
+if executable('ack')
+  let g:unite_source_grep_command = 'ack'
+  let g:unite_source_grep_default_opts = '--no-heading --no-color -a -w'
+  let g:unite_source_grep_recursive_opt = ''
+endif
 
 " NERDTree
 let NERDTreeShowBookmarks=1                  " Show the bookmarks table on startup
 let NERDTreeQuitOnOpen=1                     " Close nerd tree after opening a file
 
-" Syntastic
-set statusline+=%#warningmsg#                " Set statusline
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_enable_signs=1               " Use sign interface to mark errors
-let g:syntastic_auto_loc_list=1              " Error window auto closes when no errors, also auto opens when errors found
 
 " delimitMate Setup
 let delimitMate_expand_space = 1             " expand <space> inside empty delimiters
@@ -276,26 +312,10 @@ let g:gundo_right = 1
 " a little wider for wider screens
 let g:gundo_width = 60
 
-" Yankring
-let yankring_min_element_lenth=2
-
 " Gist
 let g:gist_detect_filetype = 1
 let g:gist_post_private = 1
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" RENAME CURRENT FILE
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'))
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
-endfunction
-map <Leader>rn :call RenameFile()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
