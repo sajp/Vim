@@ -219,12 +219,12 @@ set path+=~/workspace/sapientia-web/pipeline/sapientia-task/lib
 "
 "PLUGINS
 "
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " let Vundle manage Vundle
 " required!
-Bundle 'gmarik/vundle'
+Bundle 'gmarik/Vundle.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Raimondi/delimitMate'
@@ -234,7 +234,7 @@ Bundle "repeat.vim"
 Bundle 'tpope/vim-fugitive'
 Bundle "godlygeek/tabular"
 Bundle "mileszs/ack.vim"
-Bundle "Lokaltog/vim-powerline"
+Bundle "bling/vim-airline"
 Bundle "kien/ctrlp.vim"
 Bundle "spiiph/vim-space"
 Bundle "Gundo"
@@ -256,6 +256,8 @@ Bundle "wikipedia.vim"
 " Colour Schemes
 Bundle "altercation/vim-colors-solarized"
 
+call vundle#end()
+
 syntax on                       " enable syntax highlighting
 filetype on                     " enable vim filetype detection
 filetype plugin on
@@ -264,6 +266,7 @@ filetype indent on
 " ultisnips
 let g:UltiSnipsUsePythonVersion = 2
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
+let g:UltiSnipsSnippetsDir="~/.vim/my_snippets"
 
 " Unite
 let g:unite_source_history_yank_enable = 1
@@ -285,11 +288,8 @@ let NERDTreeQuitOnOpen=1                     " Close nerd tree after opening a f
 let delimitMate_expand_space = 1             " expand <space> inside empty delimiters
 let delimitMate_expand_cr = 1                " expand <cr> inside empty delimiters
 
-" vcscommand
-let g:VCSCommandMapPrefix='<Leader>x'        " because Nerdcommenter users <Leader>c as well
-
-" Powerline
-let g:Powerline_symbols="unicode"
+" airline
+let g:airline_powerline_fonts = 1
 
 " Ctrl-p
 let g:ctrlp_dotfiles = 1
