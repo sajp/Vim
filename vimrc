@@ -247,6 +247,8 @@ Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite-outline'
 Bundle 'Shougo/neomru.vim'
+Bundle 'edkolev/tmuxline.vim'
+Bundle 'edkolev/promptline.vim'
 
 " Only load Ultisnips for vim version 7.4 or above
 if v:version >= 704
@@ -293,6 +295,7 @@ let delimitMate_expand_cr = 1                " expand <cr> inside empty delimite
 
 " airline
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#whitespace#enabled = 0
 
 " Ctrl-p
 let g:ctrlp_dotfiles = 1
@@ -311,6 +314,28 @@ let g:gundo_width = 60
 " Gist
 let g:gist_detect_filetype = 1
 let g:gist_post_private = 1
+
+" Vimux
+ " Run the current file with prove
+ map <Leader>vp :call VimuxRunCommand("clear; prove " . bufname("%"))<CR>
+ " Prompt for a command to run map
+ map <Leader>vc :VimuxPromptCommand<CR>
+ " Run last command executed by VimuxRunCommand
+ map <Leader>vl :VimuxRunLastCommand<CR>
+ " Inspect runner pane map
+ map <Leader>vi :VimuxInspectRunner<CR>
+ " Close vim tmux runner opened by VimuxRunCommand
+ map <Leader>vq :VimuxCloseRunner<CR>
+
+ " Enable tabline ( part of airline )
+let g:airline#extensions#tabline#enabled = 1
+
+" promptline
+let g:promptline_preset = {
+        \'a'    : [ promptline#slices#user() ],
+        \'b'    : [ promptline#slices#cwd() ],
+        \'c'    : [ promptline#slices#vcs_branch() ],
+        \'y'    : [ '$( echo "$DANCER_ENVIRONMENT \n$")' ] }
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
