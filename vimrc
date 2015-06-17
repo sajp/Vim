@@ -248,7 +248,8 @@ Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite-outline'
 Bundle 'Shougo/neomru.vim'
 
-if v:version >= 740
+" Only load Ultisnips for vim version 7.4 or above
+if v:version >= 704
     Bundle 'SirVer/ultisnips'
     " ultisnips
     let g:UltiSnipsUsePythonVersion = 2
