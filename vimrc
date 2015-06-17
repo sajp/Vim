@@ -247,7 +247,14 @@ Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite-outline'
 Bundle 'Shougo/neomru.vim'
-Bundle 'SirVer/ultisnips'
+
+if v:version >= 740
+    Bundle 'SirVer/ultisnips'
+    " ultisnips
+    let g:UltiSnipsUsePythonVersion = 2
+    let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
+    let g:UltiSnipsSnippetsDir="~/.vim/my_snippets"
+endif
 
 " Syntax Files
 Bundle "tpope/vim-markdown"
@@ -262,11 +269,6 @@ syntax on                       " enable syntax highlighting
 filetype on                     " enable vim filetype detection
 filetype plugin on
 filetype indent on
-
-" ultisnips
-let g:UltiSnipsUsePythonVersion = 2
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
-let g:UltiSnipsSnippetsDir="~/.vim/my_snippets"
 
 " Unite
 let g:unite_source_history_yank_enable = 1
