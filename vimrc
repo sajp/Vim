@@ -23,8 +23,8 @@ set virtualedit=block
 " treat all numbers as decimals
 set nrformats=
 
-" default printer
-set pdev=g322pc
+" set relative number
+set relativenumber
 
 " give me more colours
 set term=xterm-256color
@@ -68,7 +68,7 @@ else
 endif
 
 " perltidy
-autocmd BufRead,BufNewFile *.pl,*.plx,*.pm command! -range=% -nargs=* Tidy <line1>,<line2>!perltidy -pbp -l=100
+autocmd BufRead,BufNewFile *.pl,*.plx,*.pm command! -range=% -nargs=* Tidy <line1>,<line2>!perltidy -pbp -l=120
 autocmd BufRead,BufNewFile *.pl,*.plx,*.pm noremap <F5> :Tidy<CR>
 
 " folding
@@ -151,8 +151,8 @@ noremap <silent> <Leader>n :tabnext<CR>
 noremap <silent> <Leader>p :tabprev<CR>
 
 " always move down one screen line
-noremap j gj
-noremap k gk
+"noremap j gj
+"noremap k gk
 
 " Ctrlp
 "noremap <Leader>b :CtrlPBuffer<CR>
@@ -213,14 +213,8 @@ nnoremap <Leader>2 <C-x>
 nnoremap Y y$
 
 " Add folders to path
-set path+=~/workspace/LIMS2-Webapp/lib
-set path+=~/workspace/LIMS2-Exception/lib
-set path+=~/workspace/Eng-Seq-Builder/lib
-set path+=~/workspace/LIMS2-Utils/lib
-set path+=~/workspace/LIMS2-Tasks/lib
-set path+=~/workspace/htgt/lib
-set path+=~/workspace/htgt-qc/lib
-set path+=~/workspace/Design-Creation/lib
+set path+=~/workspace/sapientia-web/lib
+set path+=~/workspace/sapientia-web/pipeline/sapientia-task/lib
 
 "
 "PLUGINS
@@ -244,7 +238,7 @@ Bundle "Lokaltog/vim-powerline"
 Bundle "kien/ctrlp.vim"
 Bundle "spiiph/vim-space"
 Bundle "Gundo"
-"Bundle "benmills/vimux"
+Bundle "benmills/vimux"
 Bundle "Lokaltog/vim-easymotion"
 Bundle "petdance/vim-perl"
 Bundle 'mattn/webapi-vim'
@@ -252,6 +246,7 @@ Bundle 'mattn/gist-vim'
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite-outline'
+Bundle 'Shougo/neomru.vim'
 Bundle 'SirVer/ultisnips'
 
 " Syntax Files
@@ -268,8 +263,7 @@ filetype indent on
 
 " ultisnips
 let g:UltiSnipsUsePythonVersion = 2
-let g:UltiSnipsSnippetsDir="~/.vim/snippets"
-let g:UltiSnipsSnippetDirectories=["snippets"]
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
 
 " Unite
 let g:unite_source_history_yank_enable = 1
@@ -286,7 +280,6 @@ endif
 " NERDTree
 let NERDTreeShowBookmarks=1                  " Show the bookmarks table on startup
 let NERDTreeQuitOnOpen=1                     " Close nerd tree after opening a file
-
 
 " delimitMate Setup
 let delimitMate_expand_space = 1             " expand <space> inside empty delimiters
