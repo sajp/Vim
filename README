@@ -8,7 +8,10 @@ Create symlinks:
 
 Install Vundle:
 
-    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+    git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+Launch vim and:
+    :PluginInstall
 
 Run BundleInstall inside vim
 
