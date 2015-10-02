@@ -228,7 +228,7 @@ Bundle 'gmarik/Vundle.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Raimondi/delimitMate'
-Bundle 'vcscommand.vim'
+"Bundle 'vcscommand.vim'
 Bundle "surround.vim"
 Bundle "repeat.vim"
 Bundle 'tpope/vim-fugitive'
@@ -249,6 +249,7 @@ Bundle 'Shougo/unite-outline'
 Bundle 'Shougo/neomru.vim'
 Bundle 'edkolev/tmuxline.vim'
 Bundle 'edkolev/promptline.vim'
+Bundle 'jtratner/vim-flavored-markdown'
 
 " Only load Ultisnips for vim version 7.4 or above
 if v:version >= 704
@@ -336,6 +337,15 @@ let g:promptline_preset = {
         \'b'    : [ promptline#slices#cwd() ],
         \'c'    : [ promptline#slices#vcs_branch() ],
         \'y'    : [ '$( echo "$DANCER_ENVIRONMENT \n$")' ] }
+let g:airline#extensions#branch#format = 1
+let g:airline_section_y =''
+let g:airline_section_c ='%t'
+
+" default to GH flavoured markdown
+augroup markdown
+    au!
+    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
