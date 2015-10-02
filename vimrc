@@ -281,7 +281,7 @@ let g:unite_split_rule = "botright"
 " Search using ack
 if executable('ack')
   let g:unite_source_grep_command = 'ack'
-  let g:unite_source_grep_default_opts = '--no-heading --no-color -a -w'
+  let g:unite_source_grep_default_opts = '--no-heading --no-color -w'
   let g:unite_source_grep_recursive_opt = ''
 endif
 
