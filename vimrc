@@ -246,11 +246,12 @@ Bundle 'mattn/gist-vim'
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite-outline'
-Bundle 'Shougo/neomru.vim'
-Bundle 'edkolev/tmuxline.vim'
-Bundle 'edkolev/promptline.vim'
+"Bundle 'Shougo/neomru.vim' # seems to cause vim to freeze on sanger farm
+"Bundle 'edkolev/tmuxline.vim' # create fancy tmux status bars
+"Bundle 'edkolev/promptline.vim' # create fancy prompt lines
 Bundle 'jtratner/vim-flavored-markdown'
 Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
+Bundle 'tmhedberg/SimpylFold'
 
 " Only load Ultisnips for vim version 7.4 or above
 if v:version >= 704
@@ -290,7 +291,7 @@ endif
 " NERDTree
 let NERDTreeShowBookmarks=1                  " Show the bookmarks table on startup
 let NERDTreeQuitOnOpen=1                     " Close nerd tree after opening a file
-let NERDTreeIgnore=['\.pyc$','\~$'] 
+let NERDTreeIgnore=['\.pyc$','\~$']
 
 " delimitMate Setup
 let delimitMate_expand_space = 1             " expand <space> inside empty delimiters
@@ -332,22 +333,25 @@ let g:gist_post_private = 1
 
  " Enable tabline ( part of airline )
 let g:airline#extensions#tabline#enabled = 1
-
-" promptline
-let g:promptline_preset = {
-        \'a'    : [ promptline#slices#user() ],
-        \'b'    : [ promptline#slices#cwd() ],
-        \'c'    : [ promptline#slices#vcs_branch() ],
-        \'y'    : [ '$( echo "$DANCER_ENVIRONMENT \n$")' ] }
 let g:airline#extensions#branch#format = 1
 let g:airline_section_y =''
 let g:airline_section_c ='%t'
+
+" promptline - used to create nice prompt
+"let g:promptline_preset = {
+        "\'a'    : [ promptline#slices#user() ],
+        "\'b'    : [ promptline#slices#cwd() ],
+        "\'c'    : [ promptline#slices#vcs_branch() ],
+        "\'y'    : [ '$( echo "$DANCER_ENVIRONMENT \n$")' ] }
 
 " default to GH flavoured markdown
 augroup markdown
     au!
     au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
 augroup END
+
+" simple fold
+let g:SimpylFold_docstring_preview = 1
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
