@@ -246,10 +246,11 @@ Bundle 'mattn/gist-vim'
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite-outline'
-Bundle 'Shougo/neomru.vim'
-Bundle 'edkolev/tmuxline.vim'
-Bundle 'edkolev/promptline.vim'
+"Bundle 'Shougo/neomru.vim' # seems to cause vim to freeze on sanger farm
+"Bundle 'edkolev/tmuxline.vim' # create fancy tmux status bars
+"Bundle 'edkolev/promptline.vim' # create fancy prompt lines
 Bundle 'jtratner/vim-flavored-markdown'
+Bundle 'tmhedberg/SimpylFold'
 
 " Only load Ultisnips for vim version 7.4 or above
 if v:version >= 704
@@ -280,15 +281,16 @@ call unite#filters#matcher_default#use(['matcher_regexp'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 let g:unite_split_rule = "botright"
 " Search using ack
-if executable('ack')
-  let g:unite_source_grep_command = 'ack'
-  let g:unite_source_grep_default_opts = '--no-heading --no-color -a -w'
-  let g:unite_source_grep_recursive_opt = ''
-endif
+"if executable('ack')
+  "let g:unite_source_grep_command = 'ack'
+  "let g:unite_source_grep_default_opts = '--no-heading --no-color -w'
+  "let g:unite_source_grep_recursive_opt = ''
+"endif
 
 " NERDTree
 let NERDTreeShowBookmarks=1                  " Show the bookmarks table on startup
 let NERDTreeQuitOnOpen=1                     " Close nerd tree after opening a file
+let NERDTreeIgnore=['\.pyc$', '\~$']         "
 
 " delimitMate Setup
 let delimitMate_expand_space = 1             " expand <space> inside empty delimiters
@@ -330,22 +332,25 @@ let g:gist_post_private = 1
 
  " Enable tabline ( part of airline )
 let g:airline#extensions#tabline#enabled = 1
-
-" promptline
-let g:promptline_preset = {
-        \'a'    : [ promptline#slices#user() ],
-        \'b'    : [ promptline#slices#cwd() ],
-        \'c'    : [ promptline#slices#vcs_branch() ],
-        \'y'    : [ '$( echo "$DANCER_ENVIRONMENT \n$")' ] }
 let g:airline#extensions#branch#format = 1
 let g:airline_section_y =''
 let g:airline_section_c ='%t'
+
+" promptline - used to create nice prompt
+"let g:promptline_preset = {
+        "\'a'    : [ promptline#slices#user() ],
+        "\'b'    : [ promptline#slices#cwd() ],
+        "\'c'    : [ promptline#slices#vcs_branch() ],
+        "\'y'    : [ '$( echo "$DANCER_ENVIRONMENT \n$")' ] }
 
 " default to GH flavoured markdown
 augroup markdown
     au!
     au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
 augroup END
+
+" simple fold
+let g:SimpylFold_docstring_preview = 1
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
