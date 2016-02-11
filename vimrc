@@ -250,6 +250,7 @@ Bundle 'Shougo/neomru.vim'
 Bundle 'edkolev/tmuxline.vim'
 Bundle 'edkolev/promptline.vim'
 Bundle 'jtratner/vim-flavored-markdown'
+Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
 
 " Only load Ultisnips for vim version 7.4 or above
 if v:version >= 704
@@ -289,6 +290,7 @@ endif
 " NERDTree
 let NERDTreeShowBookmarks=1                  " Show the bookmarks table on startup
 let NERDTreeQuitOnOpen=1                     " Close nerd tree after opening a file
+let NERDTreeIgnore=['\.pyc$','\~$'] 
 
 " delimitMate Setup
 let delimitMate_expand_space = 1             " expand <space> inside empty delimiters
