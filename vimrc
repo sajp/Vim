@@ -231,7 +231,6 @@ Bundle "petdance/vim-perl"
 Bundle 'mattn/webapi-vim'
 Bundle 'mattn/gist-vim'
 Bundle 'Shougo/unite.vim'
-Bundle 'Shougo/denite.nvim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite-outline'
 Bundle 'Shougo/neomru.vim'
