@@ -49,10 +49,6 @@ set linebreak
 " set backspace behaviour in insert mode
 set backspace=2
 
-" Ruby
-autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
-autocmd FileType tt2 setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
-
 " auto complete options for [Ctrl]-n and [Ctrl]-p
 set complete=.,w,b,t
 
@@ -73,7 +69,6 @@ autocmd BufRead,BufNewFile *.pl,*.plx,*.pm noremap <F5> :Tidy<CR>
 
 " folding
 let perl_fold = 1
-let ruby_fold = 1
 set foldcolumn=0
 set foldlevelstart=1
 nnoremap <silent> <Leader>z za
@@ -202,9 +197,6 @@ if exists(":Tabularize")
     vmap <Leader>tb :Tabularize /=><CR>
 endif
 
-"Yankring
-nnoremap <silent> <F10> :YRShow<CR>
-
 "Increment / decrement remap
 nnoremap <Leader>1 <C-a>
 nnoremap <Leader>2 <C-x>
@@ -228,7 +220,6 @@ Bundle 'gmarik/Vundle.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'Raimondi/delimitMate'
-"Bundle 'vcscommand.vim'
 Bundle "surround.vim"
 Bundle "repeat.vim"
 Bundle 'tpope/vim-fugitive'
@@ -244,23 +235,15 @@ Bundle "petdance/vim-perl"
 Bundle 'mattn/webapi-vim'
 Bundle 'mattn/gist-vim'
 Bundle 'Shougo/unite.vim'
+Bundle 'Shougo/denite.nvim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite-outline'
-"Bundle 'Shougo/neomru.vim' # seems to cause vim to freeze on sanger farm
+Bundle 'Shougo/neomru.vim'
 "Bundle 'edkolev/tmuxline.vim' # create fancy tmux status bars
 "Bundle 'edkolev/promptline.vim' # create fancy prompt lines
 Bundle 'jtratner/vim-flavored-markdown'
 Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
 Bundle 'tmhedberg/SimpylFold'
-
-" Only load Ultisnips for vim version 7.4 or above
-if v:version >= 704
-    Bundle 'SirVer/ultisnips'
-    " ultisnips
-    let g:UltiSnipsUsePythonVersion = 2
-    let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]
-    let g:UltiSnipsSnippetsDir="~/.vim/my_snippets"
-endif
 
 " Syntax Files
 Bundle "tpope/vim-markdown"
@@ -300,13 +283,6 @@ let delimitMate_expand_cr = 1                " expand <cr> inside empty delimite
 " airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#whitespace#enabled = 0
-
-" Ctrl-p
-let g:ctrlp_dotfiles = 1
-let g:ctrlp_max_files = 3000
-let g:ctrlp_max_depth = 10
-let g:ctrlp_open_new_file = 'v'
-let g:ctrlp_open_multiple_files = '3vr'
 
 " Gundo
 nnoremap <F6> :GundoToggle<CR>
