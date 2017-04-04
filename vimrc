@@ -149,40 +149,19 @@ noremap <silent> <Leader>p :tabprev<CR>
 "noremap j gj
 "noremap k gk
 
-" Unite
-
+" Denite Mappings
 " search files in current dir, use project file to populate list ( e.g git svn )
-nnoremap <Leader>ff :Unite -buffer-name=files -start-insert file_rec/async:!<CR>
-" as above but search files manually
-nnoremap <Leader>fa :Unite -buffer-name=files -start-insert file_rec/async<CR>
+nnoremap <Leader>ff :Denite file_rec/git -buffer-name=files<CR>
 " search buffers
-nnoremap <Leader>fb :Unite -buffer-name=buffer buffer<CR>
-" search most recently user files
-nnoremap <Leader>fm :Unite -buffer-name=mru file_mru<CR>
-" resume Unite window
-nnoremap <Leader>fr :Unite -buffer-name=resume resume<CR>
-" search tabs
-nnoremap <Leader>ft :Unite -buffer-name=tabs -quick-match tab<CR>
+nnoremap <Leader>fb :Denite buffer -buffer-name=buffer<CR>
 " Grep current directory - uses ack
-nnoremap <silent> <Leader>fg :<C-u>Unite -buffer-name=grep -vertical grep:.<CR>
-" search commands
-nnoremap <Leader>fc :Unite -buffer-name=commands command<CR>
-" search yank history
-nnoremap <Leader>fy :Unite -buffer-name=yank history/yank<CR>
-" Quickly switch lcd
-nnoremap <Leader>fd :<C-u>Unite -buffer-name=change-cwd -default-action=lcd directory_mru<CR>
+nnoremap <silent> <Leader>fg :<C-u>Denite grep -buffer-name=search-buffer<CR>
+nnoremap <silent> <Leader>fr :<C-u>Denite -resume grep -buffer-name=search-buffer<CR>
+nnoremap <silent> <Leader>fn :<C-u>Denite -resume grep -buffer-name=search-buffer -select=+1 -immediately<CR>
+" search most recently user files
+nnoremap <Leader>fm :Denite file_mru -buffer-name=mru<CR>
 " Quick outline
-nnoremap <silent> <Leader>fo :<C-u>Unite -buffer-name=outline -vertical outline<CR>
-
-
-" Custom mappings for the unite buffer
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-  " Enable navigation with control-j and control-k in insert mode
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  nmap <buffer> <ESC> <Plug>(unite_exit)
-endfunction
+nnoremap <silent> <Leader>fo :<C-u>Denite unite:outline -buffer-name=outline<CR>
 
 " Nerdtree toggle
 noremap <F2> :NERDTreeToggle<CR>
@@ -255,16 +234,34 @@ filetype on                     " enable vim filetype detection
 filetype plugin on
 filetype indent on
 
-" Unite
-let g:unite_source_history_yank_enable = 1
-call unite#filters#matcher_default#use(['matcher_regexp'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-let g:unite_split_rule = "botright"
-" Search using ack
+" Denite
+"
+call denite#custom#option('default', 'short_source_names', 1)
+call denite#custom#option('grep', 'empty', 0)
+call denite#custom#option('grep', 'auto_highlight', 1)
+
+highlight deniteMatched ctermfg=243 guifg=#999999
+highlight deniteMatchedChar ctermfg=221 guifg=#f0c674
+highlight link deniteGrepInput Constant
+
+" add git ls as a source
+call denite#custom#alias('source', 'file_rec/git', 'file_rec')
+call denite#custom#var('file_rec/git', 'command',
+	\ ['git', 'ls-files', '-co', '--exclude-standard'])
+
+" Change mappings in insert mode
+call denite#custom#map( 'insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
+call denite#custom#map( 'insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
+
+" Ack command on grep source
 if executable('ack')
-  let g:unite_source_grep_command = 'ack'
-  let g:unite_source_grep_default_opts = '--no-heading --no-color -w'
-  let g:unite_source_grep_recursive_opt = ''
+    call denite#custom#var('grep', 'command', ['ack'])
+    call denite#custom#var('grep', 'default_opts',
+            \ ['-H', '--nopager', '--nocolor', '--nogroup', '--column'])
+    call denite#custom#var('grep', 'recursive_opts', [])
+    call denite#custom#var('grep', 'pattern_opt', ['--match'])
+    call denite#custom#var('grep', 'separator', ['--'])
+    call denite#custom#var('grep', 'final_opts', [])
 endif
 
 " NERDTree
