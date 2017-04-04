@@ -149,10 +149,6 @@ noremap <silent> <Leader>p :tabprev<CR>
 "noremap j gj
 "noremap k gk
 
-" Ctrlp
-"noremap <Leader>b :CtrlPBuffer<CR>
-"noremap <Leader>f :CtrlPCurWD<CR>
-
 " Unite
 
 " search files in current dir, use project file to populate list ( e.g git svn )
