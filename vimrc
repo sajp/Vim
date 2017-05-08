@@ -149,6 +149,31 @@ noremap <silent> <Leader>p :tabprev<CR>
 "noremap j gj
 "noremap k gk
 
+" Vimux
+function! VimuxSetupRunner()
+  call VimuxSendText("cd ~/workspace/sapientia-web/docker-compose/pipeline-dev/")
+  call VimuxSendKeys("Enter")
+  call VimuxSendText("./docker-pipeline")
+  call VimuxSendKeys("Enter")
+endfunction
+
+nnoremap <Leader>vs :call VimuxSetupRunner()<CR>
+
+let g:VimuxOrientation = "h"
+let g:VimuxRunnerType = "window"
+" Run the current file with prove
+nnoremap <Leader>vp :call VimuxRunCommand("clear; prove -v -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib " . bufname("%"))<CR>
+" Prompt for a command to run map
+nnoremap <Leader>vc :VimuxPromptCommand<CR>
+" Run last command executed by VimuxRunCommand
+nnoremap <Leader>vl :VimuxRunLastCommand<CR>
+" Zoom vim tmux runner opened by VimuxRunCommand
+nnoremap <Leader>vz :VimuxZoomRunner<CR>
+" Inspect runner pane map
+nnoremap <Leader>vi :VimuxInspectRunner<CR>
+" Close vim tmux runner opened by VimuxRunCommand
+nnoremap <Leader>vq :VimuxCloseRunner<CR>
+
 " Denite Mappings
 " search files in current dir, use project file to populate list ( e.g git svn )
 nnoremap <Leader>ff :Denite file_rec/git -buffer-name=files<CR>
@@ -287,17 +312,6 @@ let g:gundo_width = 60
 let g:gist_detect_filetype = 1
 let g:gist_post_private = 1
 
-" Vimux
- " Run the current file with prove
- map <Leader>vp :call VimuxRunCommand("clear; prove " . bufname("%"))<CR>
- " Prompt for a command to run map
- map <Leader>vc :VimuxPromptCommand<CR>
- " Run last command executed by VimuxRunCommand
- map <Leader>vl :VimuxRunLastCommand<CR>
- " Inspect runner pane map
- map <Leader>vi :VimuxInspectRunner<CR>
- " Close vim tmux runner opened by VimuxRunCommand
- map <Leader>vq :VimuxCloseRunner<CR>
 
  " Enable tabline ( part of airline )
 let g:airline#extensions#tabline#enabled = 1
