@@ -160,9 +160,11 @@ endfunction
 nnoremap <Leader>vs :call VimuxSetupRunner()<CR>
 
 let g:VimuxOrientation = "h"
-let g:VimuxRunnerType = "window"
+let g:VimuxHeight = "33"
+" setup a tmux pane to run test ( fire up a docker container )
+nnoremap <Leader>vs :call VimuxRunCommand("cd ~/workspace/sapientia-web/docker-compose/saj-dev;bash ./docker-pipeline")<CR>
 " Run the current file with prove
-nnoremap <Leader>vp :call VimuxRunCommand("clear; prove -v -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib " . bufname("%"))<CR>
+nnoremap <Leader>vp :call VimuxRunCommand("clear; prove -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib " . bufname("%"))<CR>
 " Prompt for a command to run map
 nnoremap <Leader>vc :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
