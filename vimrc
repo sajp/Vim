@@ -245,6 +245,8 @@ Bundle 'Shougo/neomru.vim'
 Bundle 'jtratner/vim-flavored-markdown'
 Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
 Bundle 'tmhedberg/SimpylFold'
+Plugin 'nvie/vim-flake8'
+Plugin 'w0rp/ale'
 
 " Syntax Files
 Bundle "tpope/vim-markdown"
