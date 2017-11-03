@@ -175,20 +175,28 @@ nnoremap <Leader>vz :VimuxZoomRunner<CR>
 nnoremap <Leader>vi :VimuxInspectRunner<CR>
 " Close vim tmux runner opened by VimuxRunCommand
 nnoremap <Leader>vq :VimuxCloseRunner<CR>
+" Run the current file with prove
+nnoremap <Leader>vy :call VimuxRunCommand("clear; pytest -v " . bufname("%"))<CR>
 
 " Denite Mappings
 " search files in current dir, use project file to populate list ( e.g git svn )
-nnoremap <Leader>ff :Denite file_rec/git -buffer-name=files<CR>
+"nnoremap <Leader>ff :Denite file_rec/git -buffer-name=files<CR>
 " search buffers
-nnoremap <Leader>fb :Denite buffer -buffer-name=buffer<CR>
+"nnoremap <Leader>fb :Denite buffer -buffer-name=buffer<CR>
 " Grep current directory - uses ack
-nnoremap <silent> <Leader>fg :<C-u>Denite grep -buffer-name=search-buffer<CR>
-nnoremap <silent> <Leader>fr :<C-u>Denite -resume grep -buffer-name=search-buffer<CR>
-nnoremap <silent> <Leader>fn :<C-u>Denite -resume grep -buffer-name=search-buffer -select=+1 -immediately<CR>
+"nnoremap <silent> <Leader>fg :<C-u>Denite grep -buffer-name=search-buffer<CR>
+"nnoremap <silent> <Leader>fr :<C-u>Denite -resume grep -buffer-name=search-buffer<CR>
+"nnoremap <silent> <Leader>fn :<C-u>Denite -resume grep -buffer-name=search-buffer -select=+1 -immediately<CR>
 " search most recently user files
-nnoremap <Leader>fm :Denite file_mru -buffer-name=mru<CR>
+"nnoremap <Leader>fm :Denite file_mru -buffer-name=mru<CR>
 " Quick outline
-nnoremap <silent> <Leader>fo :<C-u>Denite unite:outline -buffer-name=outline<CR>
+"nnoremap <silent> <Leader>fo :<C-u>Denite unite:outline -buffer-name=outline<CR>
+
+"fzf
+set rtp+=~/.fzf
+nnoremap <silent> <Leader>ff :<C-u>GFiles<CR>
+nnoremap <silent> <Leader>fb :<C-u>Buffers<CR>
+nnoremap <silent> <Leader>fa :<C-u>Ag<CR>
 
 " Nerdtree toggle
 noremap <F2> :NERDTreeToggle<CR>
@@ -247,6 +255,7 @@ Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
 Bundle 'tmhedberg/SimpylFold'
 Plugin 'nvie/vim-flake8'
 Plugin 'w0rp/ale'
+Plugin 'junegunn/fzf.vim'
 
 " Syntax Files
 Bundle "tpope/vim-markdown"
@@ -256,6 +265,7 @@ Bundle "wikipedia.vim"
 Bundle "altercation/vim-colors-solarized"
 
 call vundle#end()
+
 
 syntax on                       " enable syntax highlighting
 filetype on                     " enable vim filetype detection
