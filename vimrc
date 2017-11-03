@@ -170,13 +170,21 @@ nnoremap <Leader>vv :call VimuxRunCommand("clear; prove -v -I /app/lib -I /app/e
 " Prompt for a command to run map
 nnoremap <Leader>vc :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
-nnoremap <Leader>vl :VimuxRunLastCommand<CR>
+"nnoremap <Leader>vl :VimuxRunLastCommand<CR>
 " Zoom vim tmux runner opened by VimuxRunCommand
 nnoremap <Leader>vz :VimuxZoomRunner<CR>
 " Inspect runner pane map
 nnoremap <Leader>vi :VimuxInspectRunner<CR>
 " Close vim tmux runner opened by VimuxRunCommand
 nnoremap <Leader>vq :VimuxCloseRunner<CR>
+
+function! VimuxSlime()
+    call VimuxSendText(@0)
+    "call VimuxSendKeys("Enter")
+endfunction
+
+" If text is selected, save it in the v buffer and send that buffer it to tmux
+nnoremap <Leader>vl yy :call VimuxSlime()<CR>
 
 " Denite Mappings
 " search files in current dir, use project file to populate list ( e.g git svn )
@@ -341,6 +349,8 @@ augroup END
 " simple fold
 let g:SimpylFold_docstring_preview = 1
 
+" ale
+"g:ale_perl_perl_executable = 'perl'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
