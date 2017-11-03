@@ -165,6 +165,8 @@ let g:VimuxHeight = "33"
 nnoremap <Leader>vs :call VimuxRunCommand("cd ~/workspace/sapientia-web/docker-compose/saj-dev;bash ./docker-pipeline")<CR>
 " Run the current file with prove
 nnoremap <Leader>vp :call VimuxRunCommand("clear; prove -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib " . bufname("%"))<CR>
+" Run the current file with prove verbose
+nnoremap <Leader>vv :call VimuxRunCommand("clear; prove -v -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib " . bufname("%"))<CR>
 " Prompt for a command to run map
 nnoremap <Leader>vc :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
