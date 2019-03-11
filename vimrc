@@ -24,7 +24,7 @@ set virtualedit=block
 set nrformats=
 
 " set relative number
-set relativenumber
+"set relativenumber
 
 " give me more colours
 set term=xterm-256color
@@ -160,7 +160,7 @@ endfunction
 nnoremap <Leader>vs :call VimuxSetupRunner()<CR>
 
 let g:VimuxOrientation = "h"
-let g:VimuxHeight = "33"
+let g:VimuxHeight = "25"
 " setup a tmux pane to run test ( fire up a docker container )
 nnoremap <Leader>vs :call VimuxRunCommand("cd ~/workspace/sapientia-web/docker-compose/saj-dev;bash ./docker-pipeline")<CR>
 " Run the current file with prove
@@ -246,14 +246,14 @@ Bundle 'tpope/vim-fugitive'
 Bundle "godlygeek/tabular"
 Bundle "mileszs/ack.vim"
 Bundle "bling/vim-airline"
-Bundle "kien/ctrlp.vim"
+"Bundle "kien/ctrlp.vim"
 Bundle "spiiph/vim-space"
 Bundle "Gundo"
 Bundle "benmills/vimux"
 Bundle "Lokaltog/vim-easymotion"
 Bundle "petdance/vim-perl"
-Bundle 'mattn/webapi-vim'
-Bundle 'mattn/gist-vim'
+"Bundle 'mattn/webapi-vim'
+"Bundle 'mattn/gist-vim'
 Bundle 'Shougo/denite.nvim'
 Bundle 'Shougo/vimproc.vim'
 Bundle 'Shougo/unite-outline'
@@ -264,12 +264,12 @@ Bundle 'jtratner/vim-flavored-markdown'
 Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
 Bundle 'tmhedberg/SimpylFold'
 Plugin 'nvie/vim-flake8'
-Plugin 'w0rp/ale'
+"Plugin 'w0rp/ale'
 Plugin 'junegunn/fzf.vim'
 
 " Syntax Files
 Bundle "tpope/vim-markdown"
-Bundle "wikipedia.vim"
+"Bundle "wikipedia.vim"
 
 " Colour Schemes
 Bundle "altercation/vim-colors-solarized"
@@ -338,7 +338,7 @@ let g:gist_post_private = 1
 
 
  " Enable tabline ( part of airline )
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#branch#format = 1
 let g:airline_section_y =''
 let g:airline_section_c ='%t'
