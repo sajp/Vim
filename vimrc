@@ -17,6 +17,9 @@ set showmode
 
 set backupdir=~/.vim_backup
 
+" alias unnamed register to '+' register to allow copying to clipboard
+set clipboard=unnamedplus
+
 " when selecting block in visual mode allow selection outside end of line
 set virtualedit=block
 
@@ -25,9 +28,6 @@ set nrformats=
 
 " set relative number
 "set relativenumber
-
-" give me more colours
-set term=xterm-256color
 
 " tell VIM to always put a status line in, even if there is only one window
 set laststatus=2
@@ -63,24 +63,16 @@ else
     colorscheme Mustang
 endif
 
-" perltidy
-autocmd BufRead,BufNewFile *.pl,*.plx,*.pm command! -range=% -nargs=* Tidy <line1>,<line2>!perltidy -pbp -l=120
-autocmd BufRead,BufNewFile *.pl,*.plx,*.pm noremap <F5> :Tidy<CR>
-
 " folding
 let perl_fold = 1
-set foldcolumn=0
+set foldcolumn=2
 set foldlevelstart=1
+set foldmethod=indent
 nnoremap <silent> <Leader>z za
+autocmd FileType json setlocal foldmethod=syntax
 
 " suffix
 set suffixesadd=.pm,.pl,.t
-
-" Persistance Undo Keep undo history across sessions, by storing in file.
-"set undodir=~/.vim/backups
-"set undofile
-"set undolevels = 1000 "maximum number of changes that can be undone
-"set undoreload = 10000 "maximum number lines to save for undo on a buffer reload
 
 "
 " MAPPINGS
@@ -145,10 +137,6 @@ map <silent> <Leader>sl <C-W>>
 noremap <silent> <Leader>n :tabnext<CR>
 noremap <silent> <Leader>p :tabprev<CR>
 
-" always move down one screen line
-"noremap j gj
-"noremap k gk
-
 " Vimux
 function! VimuxSetupRunner()
   call VimuxSendText("cd ~/workspace/sapientia-web/docker-compose/pipeline-dev/")
@@ -157,16 +145,15 @@ function! VimuxSetupRunner()
   call VimuxSendKeys("Enter")
 endfunction
 
-nnoremap <Leader>vs :call VimuxSetupRunner()<CR>
+"nnoremap <Leader>vs :call VimuxSetupRunner()<CR>
 
 let g:VimuxOrientation = "h"
 let g:VimuxHeight = "25"
 " setup a tmux pane to run test ( fire up a docker container )
 nnoremap <Leader>vs :call VimuxRunCommand("cd ~/workspace/sapientia-web/docker-compose/saj-dev;bash ./docker-pipeline")<CR>
-" Run the current file with prove
-nnoremap <Leader>vp :call VimuxRunCommand("clear; prove -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib " . bufname("%"))<CR>
 " Run the current file with prove verbose
-nnoremap <Leader>vv :call VimuxRunCommand("clear; prove -v -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib " . bufname("%"))<CR>
+nnoremap <Leader>vp :call VimuxRunCommand("clear; prove -v -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib " . bufname("%"))<CR>
+nnoremap <Leader>vv :TestFile<CR>
 " Prompt for a command to run map
 nnoremap <Leader>vc :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
@@ -188,34 +175,20 @@ endfunction
 " If text is selected, save it in the v buffer and send that buffer it to tmux
 nnoremap <Leader>vl yy :call VimuxSlime()<CR>
 
-" Denite Mappings
-" search files in current dir, use project file to populate list ( e.g git svn )
-"nnoremap <Leader>ff :Denite file_rec/git -buffer-name=files<CR>
-" search buffers
-"nnoremap <Leader>fb :Denite buffer -buffer-name=buffer<CR>
-" Grep current directory - uses ack
-"nnoremap <silent> <Leader>fg :<C-u>Denite grep -buffer-name=search-buffer<CR>
-"nnoremap <silent> <Leader>fr :<C-u>Denite -resume grep -buffer-name=search-buffer<CR>
-"nnoremap <silent> <Leader>fn :<C-u>Denite -resume grep -buffer-name=search-buffer -select=+1 -immediately<CR>
-" search most recently user files
-"nnoremap <Leader>fm :Denite file_mru -buffer-name=mru<CR>
-" Quick outline
-"nnoremap <silent> <Leader>fo :<C-u>Denite unite:outline -buffer-name=outline<CR>
-
 "fzf
-set rtp+=~/.fzf
+"set rtp+=~/.fzf
+set rtp+=/usr/local/opt/fzf
 nnoremap <silent> <Leader>ff :<C-u>GFiles<CR>
+nnoremap <silent> <Leader>fa :<C-u>Files<CR>
+nnoremap <silent> <Leader>fs :<C-u>GFiles?<CR>
 nnoremap <silent> <Leader>fb :<C-u>Buffers<CR>
-nnoremap <silent> <Leader>fa :<C-u>Ag<CR>
+nnoremap <silent> <Leader>fg :<C-u>Rg <C-R><C-W><CR>
+nnoremap <silent> <Leader>fc :<C-u>Commits <CR>
+nnoremap <silent> <Leader>fw :<C-u>Windows <CR>
+nnoremap <silent> <Leader>fl :<C-u>BLines <CR>
 
 " Nerdtree toggle
 noremap <F2> :NERDTreeToggle<CR>
-
-" Tabular
-if exists(":Tabularize")
-    nmap <Leader>tb :Tabularize /=><CR>
-    vmap <Leader>tb :Tabularize /=><CR>
-endif
 
 "Increment / decrement remap
 nnoremap <Leader>1 <C-a>
@@ -243,74 +216,35 @@ Bundle 'Raimondi/delimitMate'
 Bundle "surround.vim"
 Bundle "repeat.vim"
 Bundle 'tpope/vim-fugitive'
-Bundle "godlygeek/tabular"
-Bundle "mileszs/ack.vim"
 Bundle "bling/vim-airline"
-"Bundle "kien/ctrlp.vim"
 Bundle "spiiph/vim-space"
-Bundle "Gundo"
 Bundle "benmills/vimux"
-Bundle "Lokaltog/vim-easymotion"
 Bundle "petdance/vim-perl"
-"Bundle 'mattn/webapi-vim'
-"Bundle 'mattn/gist-vim'
-Bundle 'Shougo/denite.nvim'
-Bundle 'Shougo/vimproc.vim'
-Bundle 'Shougo/unite-outline'
-Bundle 'Shougo/neomru.vim'
-"Bundle 'edkolev/tmuxline.vim' # create fancy tmux status bars
-"Bundle 'edkolev/promptline.vim' # create fancy prompt lines
-Bundle 'jtratner/vim-flavored-markdown'
-Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
 Bundle 'tmhedberg/SimpylFold'
 Plugin 'nvie/vim-flake8'
-"Plugin 'w0rp/ale'
 Plugin 'junegunn/fzf.vim'
+Plugin 'tpope/vim-projectionist'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'junegunn/vim-peekaboo'
+Plugin 'w0rp/ale'
+Plugin 'janko/vim-test'
 
 " Syntax Files
 Bundle "tpope/vim-markdown"
-"Bundle "wikipedia.vim"
+Plugin 'bioSyntax/bioSyntax-vim'
+Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
+Bundle 'jtratner/vim-flavored-markdown'
+Plugin 'confluencewiki.vim'
 
 " Colour Schemes
 Bundle "altercation/vim-colors-solarized"
 
 call vundle#end()
 
-
 syntax on                       " enable syntax highlighting
 filetype on                     " enable vim filetype detection
 filetype plugin on
 filetype indent on
-
-" Denite
-"
-call denite#custom#option('default', 'short_source_names', 1)
-call denite#custom#option('grep', 'empty', 0)
-call denite#custom#option('grep', 'auto_highlight', 1)
-
-highlight deniteMatched ctermfg=243 guifg=#999999
-highlight deniteMatchedChar ctermfg=221 guifg=#f0c674
-highlight link deniteGrepInput Constant
-
-" add git ls as a source
-call denite#custom#alias('source', 'file_rec/git', 'file_rec')
-call denite#custom#var('file_rec/git', 'command',
-	\ ['git', 'ls-files', '-co', '--exclude-standard'])
-
-" Change mappings in insert mode
-call denite#custom#map( 'insert', '<C-j>', '<denite:move_to_next_line>', 'noremap')
-call denite#custom#map( 'insert', '<C-k>', '<denite:move_to_previous_line>', 'noremap')
-
-" Ack command on grep source
-if executable('ack')
-    call denite#custom#var('grep', 'command', ['ack'])
-    call denite#custom#var('grep', 'default_opts',
-            \ ['-H', '--nopager', '--nocolor', '--nogroup', '--column'])
-    call denite#custom#var('grep', 'recursive_opts', [])
-    call denite#custom#var('grep', 'pattern_opt', ['--match'])
-    call denite#custom#var('grep', 'separator', ['--'])
-    call denite#custom#var('grep', 'final_opts', [])
-endif
 
 " NERDTree
 let NERDTreeShowBookmarks=1                  " Show the bookmarks table on startup
@@ -336,19 +270,11 @@ let g:gundo_width = 60
 let g:gist_detect_filetype = 1
 let g:gist_post_private = 1
 
-
  " Enable tabline ( part of airline )
 let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#branch#format = 1
 let g:airline_section_y =''
 let g:airline_section_c ='%t'
-
-" promptline - used to create nice prompt
-"let g:promptline_preset = {
-        "\'a'    : [ promptline#slices#user() ],
-        "\'b'    : [ promptline#slices#cwd() ],
-        "\'c'    : [ promptline#slices#vcs_branch() ],
-        "\'y'    : [ '$( echo "$DANCER_ENVIRONMENT \n$")' ] }
 
 " default to GH flavoured markdown
 augroup markdown
@@ -359,9 +285,33 @@ augroup END
 " simple fold
 let g:SimpylFold_docstring_preview = 1
 
-" ale
-"g:ale_perl_perl_executable = 'perl'
+set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 
+" EasyAlign
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+" peekabo
+let g:peekaboo_window = 'split bo 20new'
+
+" ale
+" config in relevant config files
+let g:ale_fixers = {'python': [ 'black', 'trim_whitespace']}
+let g:ale_linters = {'python': [ 'pylint', 'mypy' ]}
+let g:ale_python_black_options = '--target-version=py36 --line-length=120'
+let g:ale_python_mypy_options = '--no-strict-optional --ignore-missing-imports'
+"let g:ale_python_pylint_options = '--max-line-length=120 --disable=design --disable=missing-docstring --disable=bad-continuation --disable=max-module-lines --disable=useless-super-delegation --disable=import-error --disable=logging-fstring-interpolation --disable=invalid-name --disable=duplicate-code --disable=broad-except --disable=logging-format-interpolation'
+
+" vim-test
+let test#strategy = "vimux"
+let test#perl#prove#options = '-v -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib'
+let test#python#runner = 'pytest'
+let g:test#perl#prove#file_pattern = '\v^t/.*\.t$'
+let test#python#pytest#options = '-v --lf'
+let test#filename_modifier = ':p' " Full file path 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
