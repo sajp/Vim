@@ -1,5 +1,4 @@
 set nocompatible               " be iMproved
-filetype off                   " required for Vundle, turn on later
 
 set nu                          " set line numbers
 set ignorecase
@@ -17,6 +16,9 @@ set showmode
 
 set backupdir=~/.vim_backup
 
+" alias unnamed register to '+' register to allow copying to clipboard
+set clipboard=unnamedplus
+
 " when selecting block in visual mode allow selection outside end of line
 set virtualedit=block
 
@@ -24,10 +26,7 @@ set virtualedit=block
 set nrformats=
 
 " set relative number
-set relativenumber
-
-" give me more colours
-set term=xterm-256color
+"set relativenumber
 
 " tell VIM to always put a status line in, even if there is only one window
 set laststatus=2
@@ -56,6 +55,9 @@ set complete=.,w,b,t
 " allowed to go in there (ie. the "must save first" error doesn't come up)
 set hidden
 
+let g:VimuxOrientation = "h"
+let g:VimuxHeight = "25"
+
 " color scheme
 if &diff
     colorscheme morning
@@ -63,24 +65,16 @@ else
     colorscheme Mustang
 endif
 
-" perltidy
-autocmd BufRead,BufNewFile *.pl,*.plx,*.pm command! -range=% -nargs=* Tidy <line1>,<line2>!perltidy -pbp -l=120
-autocmd BufRead,BufNewFile *.pl,*.plx,*.pm noremap <F5> :Tidy<CR>
-
 " folding
 let perl_fold = 1
-set foldcolumn=0
+set foldcolumn=2
 set foldlevelstart=1
+set foldmethod=indent
 nnoremap <silent> <Leader>z za
+autocmd FileType json setlocal foldmethod=syntax
 
 " suffix
 set suffixesadd=.pm,.pl,.t
-
-" Persistance Undo Keep undo history across sessions, by storing in file.
-"set undodir=~/.vim/backups
-"set undofile
-"set undolevels = 1000 "maximum number of changes that can be undone
-"set undoreload = 10000 "maximum number lines to save for undo on a buffer reload
 
 "
 " MAPPINGS
@@ -145,53 +139,23 @@ map <silent> <Leader>sl <C-W>>
 noremap <silent> <Leader>n :tabnext<CR>
 noremap <silent> <Leader>p :tabprev<CR>
 
-" always move down one screen line
-"noremap j gj
-"noremap k gk
+nnoremap <Leader>vv :TestFile<CR>
+" Prompt for a command to run map
 
-" Unite
-
-" search files in current dir, use project file to populate list ( e.g git svn )
-nnoremap <Leader>ff :Unite -buffer-name=files -start-insert file_rec/async:!<CR>
-" as above but search files manually
-nnoremap <Leader>fa :Unite -buffer-name=files -start-insert file_rec/async<CR>
-" search buffers
-nnoremap <Leader>fb :Unite -buffer-name=buffer buffer<CR>
-" search most recently user files
-nnoremap <Leader>fm :Unite -buffer-name=mru file_mru<CR>
-" resume Unite window
-nnoremap <Leader>fr :Unite -buffer-name=resume resume<CR>
-" search tabs
-nnoremap <Leader>ft :Unite -buffer-name=tabs -quick-match tab<CR>
-" Grep current directory - uses ack
-nnoremap <silent> <Leader>fg :<C-u>Unite -buffer-name=grep -vertical grep:.<CR>
-" search commands
-nnoremap <Leader>fc :Unite -buffer-name=commands command<CR>
-" search yank history
-nnoremap <Leader>fy :Unite -buffer-name=yank history/yank<CR>
-" Quickly switch lcd
-nnoremap <Leader>fd :<C-u>Unite -buffer-name=change-cwd -default-action=lcd directory_mru<CR>
-" Quick outline
-nnoremap <silent> <Leader>fo :<C-u>Unite -buffer-name=outline -vertical outline<CR>
-
-
-" Custom mappings for the unite buffer
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-  " Enable navigation with control-j and control-k in insert mode
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  nmap <buffer> <ESC> <Plug>(unite_exit)
-endfunction
+"fzf
+"set rtp+=~/.fzf
+set rtp+=/opt/homebrew/bin/fzf
+nnoremap <silent> <Leader>ff :<C-u>GFiles<CR>
+nnoremap <silent> <Leader>fa :<C-u>Files<CR>
+nnoremap <silent> <Leader>fs :<C-u>GFiles?<CR>
+nnoremap <silent> <Leader>fb :<C-u>Buffers<CR>
+nnoremap <silent> <Leader>fg :<C-u>Rg <C-R><C-W><CR>
+nnoremap <silent> <Leader>fc :<C-u>Commits <CR>
+nnoremap <silent> <Leader>fw :<C-u>Windows <CR>
+nnoremap <silent> <Leader>fl :<C-u>BLines <CR>
 
 " Nerdtree toggle
 noremap <F2> :NERDTreeToggle<CR>
-
-" Tabular
-if exists(":Tabularize")
-    nmap <Leader>tb :Tabularize /=><CR>
-    vmap <Leader>tb :Tabularize /=><CR>
-endif
 
 "Increment / decrement remap
 nnoremap <Leader>1 <C-a>
@@ -200,71 +164,45 @@ nnoremap <Leader>2 <C-x>
 " make Y consistent with D and C
 nnoremap Y y$
 
-" Add folders to path
-set path+=~/workspace/sapientia-web/lib
-set path+=~/workspace/sapientia-web/pipeline/sapientia-task/lib
-
 "
-"PLUGINS
+"PLUGINS - vim-plug
 "
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin()
 
-" let Vundle manage Vundle
-" required!
-Bundle 'gmarik/Vundle.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'Raimondi/delimitMate'
-Bundle "surround.vim"
-Bundle "repeat.vim"
-Bundle 'tpope/vim-fugitive'
-Bundle "godlygeek/tabular"
-Bundle "mileszs/ack.vim"
-Bundle "bling/vim-airline"
-Bundle "kien/ctrlp.vim"
-Bundle "spiiph/vim-space"
-Bundle "Gundo"
-Bundle "benmills/vimux"
-Bundle "Lokaltog/vim-easymotion"
-Bundle "petdance/vim-perl"
-Bundle 'mattn/webapi-vim'
-Bundle 'mattn/gist-vim'
-Bundle 'Shougo/unite.vim'
-Bundle 'Shougo/vimproc.vim'
-Bundle 'Shougo/unite-outline'
-Bundle 'Shougo/neomru.vim'
-"Bundle 'edkolev/tmuxline.vim' # create fancy tmux status bars
-"Bundle 'edkolev/promptline.vim' # create fancy prompt lines
-Bundle 'jtratner/vim-flavored-markdown'
-Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
-Bundle 'tmhedberg/SimpylFold'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-fugitive'
+Plug 'bling/vim-airline'
+Plug 'spiiph/vim-space'
+Plug 'benmills/vimux'
+Plug 'tmhedberg/SimpylFold'
+Plug 'nvie/vim-flake8'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'tpope/vim-projectionist'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-peekaboo'
+Plug 'w0rp/ale'
+Plug 'janko/vim-test'
 
 " Syntax Files
-Bundle "tpope/vim-markdown"
-Bundle "wikipedia.vim"
+Plug 'tpope/vim-markdown'
+Plug 'bioSyntax/bioSyntax-vim'
+Plug 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
+Plug 'jtratner/vim-flavored-markdown'
 
 " Colour Schemes
-Bundle "altercation/vim-colors-solarized"
+Plug 'altercation/vim-colors-solarized'
 
-call vundle#end()
+call plug#end()
 
 syntax on                       " enable syntax highlighting
 filetype on                     " enable vim filetype detection
 filetype plugin on
 filetype indent on
-
-" Unite
-let g:unite_source_history_yank_enable = 1
-call unite#filters#matcher_default#use(['matcher_regexp'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-let g:unite_split_rule = "botright"
-" Search using ack
-if executable('ack')
-  let g:unite_source_grep_command = 'ack'
-  let g:unite_source_grep_default_opts = '--no-heading --no-color -w'
-  let g:unite_source_grep_recursive_opt = ''
-endif
 
 " NERDTree
 let NERDTreeShowBookmarks=1                  " Show the bookmarks table on startup
@@ -279,41 +217,11 @@ let delimitMate_expand_cr = 1                " expand <cr> inside empty delimite
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#whitespace#enabled = 0
 
-" Gundo
-nnoremap <F6> :GundoToggle<CR>
-" open on the right
-let g:gundo_right = 1
-" a little wider for wider screens
-let g:gundo_width = 60
-
-" Gist
-let g:gist_detect_filetype = 1
-let g:gist_post_private = 1
-
-" Vimux
- " Run the current file with prove
- map <Leader>vp :call VimuxRunCommand("clear; prove " . bufname("%"))<CR>
- " Prompt for a command to run map
- map <Leader>vc :VimuxPromptCommand<CR>
- " Run last command executed by VimuxRunCommand
- map <Leader>vl :VimuxRunLastCommand<CR>
- " Inspect runner pane map
- map <Leader>vi :VimuxInspectRunner<CR>
- " Close vim tmux runner opened by VimuxRunCommand
- map <Leader>vq :VimuxCloseRunner<CR>
-
  " Enable tabline ( part of airline )
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#branch#format = 1
 let g:airline_section_y =''
 let g:airline_section_c ='%t'
-
-" promptline - used to create nice prompt
-"let g:promptline_preset = {
-        "\'a'    : [ promptline#slices#user() ],
-        "\'b'    : [ promptline#slices#cwd() ],
-        "\'c'    : [ promptline#slices#vcs_branch() ],
-        "\'y'    : [ '$( echo "$DANCER_ENVIRONMENT \n$")' ] }
 
 " default to GH flavoured markdown
 augroup markdown
@@ -324,8 +232,46 @@ augroup END
 " simple fold
 let g:SimpylFold_docstring_preview = 1
 
+set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 
+" EasyAlign
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+" peekabo
+let g:peekaboo_window = 'split bo 20new'
+
+" ale
+" config in relevant config files
+let g:ale_fixers = {'python': [ 'black', 'trim_whitespace']}
+let g:ale_linters = {'python': [ 'pylint', 'mypy' ]}
+let g:ale_python_black_options = '--target-version=py36 --line-length=120'
+let g:ale_python_mypy_options = '--no-strict-optional --ignore-missing-imports'
+"let g:ale_python_pylint_options = '--max-line-length=120 --disable=design --disable=missing-docstring --disable=bad-continuation --disable=max-module-lines --disable=useless-super-delegation --disable=import-error --disable=logging-fstring-interpolation --disable=invalid-name --disable=duplicate-code --disable=broad-except --disable=logging-format-interpolation'
+
+" vim-test
+let test#strategy = "vimux"
+let test#perl#prove#options = '-v -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib'
+let test#python#runner = 'pytest'
+let g:test#perl#prove#file_pattern = '\v^t/.*\.t$'
+let test#python#pytest#options = '-v --lf'
+let test#filename_modifier = ':p' " Full file path 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <Leader>ed :edit <C-R>=expand("%:p:h") . "/"<CR>
+
+
+" Triger `autoread` when files changes on disk
+" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+" https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+            \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+
+" Notification after file change
+" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
