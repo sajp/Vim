@@ -1,5 +1,4 @@
 set nocompatible               " be iMproved
-filetype off                   " required for Vundle, turn on later
 
 set nu                          " set line numbers
 set ignorecase
@@ -55,6 +54,9 @@ set complete=.,w,b,t
 " Make sure that unsaved buffers that are to be put in the background are
 " allowed to go in there (ie. the "must save first" error doesn't come up)
 set hidden
+
+let g:VimuxOrientation = "h"
+let g:VimuxHeight = "25"
 
 " color scheme
 if &diff
@@ -137,47 +139,12 @@ map <silent> <Leader>sl <C-W>>
 noremap <silent> <Leader>n :tabnext<CR>
 noremap <silent> <Leader>p :tabprev<CR>
 
-" Vimux
-function! VimuxSetupRunner()
-  call VimuxSendText("cd ~/workspace/sapientia-web/docker-compose/pipeline-dev/")
-  call VimuxSendKeys("Enter")
-  call VimuxSendText("./docker-pipeline")
-  call VimuxSendKeys("Enter")
-endfunction
-
-"nnoremap <Leader>vs :call VimuxSetupRunner()<CR>
-
-let g:VimuxOrientation = "h"
-let g:VimuxHeight = "25"
-" setup a tmux pane to run test ( fire up a docker container )
-nnoremap <Leader>vs :call VimuxRunCommand("cd ~/workspace/sapientia-web/docker-compose/saj-dev;bash ./docker-pipeline")<CR>
-" Run the current file with prove verbose
-nnoremap <Leader>vp :call VimuxRunCommand("clear; prove -v -I /app/lib -I /app/ext-lib -I /app/t/lib -I /app/pipeline/sapientia-task/lib " . bufname("%"))<CR>
 nnoremap <Leader>vv :TestFile<CR>
 " Prompt for a command to run map
-nnoremap <Leader>vc :VimuxPromptCommand<CR>
-" Run last command executed by VimuxRunCommand
-"nnoremap <Leader>vl :VimuxRunLastCommand<CR>
-" Zoom vim tmux runner opened by VimuxRunCommand
-nnoremap <Leader>vz :VimuxZoomRunner<CR>
-" Inspect runner pane map
-nnoremap <Leader>vi :VimuxInspectRunner<CR>
-" Close vim tmux runner opened by VimuxRunCommand
-nnoremap <Leader>vq :VimuxCloseRunner<CR>
-" Run the current file with prove
-nnoremap <Leader>vy :call VimuxRunCommand("clear; pytest -v " . bufname("%"))<CR>
-
-function! VimuxSlime()
-    call VimuxSendText(@0)
-    "call VimuxSendKeys("Enter")
-endfunction
-
-" If text is selected, save it in the v buffer and send that buffer it to tmux
-nnoremap <Leader>vl yy :call VimuxSlime()<CR>
 
 "fzf
 "set rtp+=~/.fzf
-set rtp+=/usr/local/opt/fzf
+set rtp+=/opt/homebrew/bin/fzf
 nnoremap <silent> <Leader>ff :<C-u>GFiles<CR>
 nnoremap <silent> <Leader>fa :<C-u>Files<CR>
 nnoremap <silent> <Leader>fs :<C-u>GFiles?<CR>
@@ -197,49 +164,40 @@ nnoremap <Leader>2 <C-x>
 " make Y consistent with D and C
 nnoremap Y y$
 
-" Add folders to path
-set path+=~/workspace/sapientia-web/lib
-set path+=~/workspace/sapientia-web/pipeline/sapientia-task/lib
-
 "
-"PLUGINS
+"PLUGINS - vim-plug
 "
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin()
 
-" let Vundle manage Vundle
-" required!
-Bundle 'gmarik/Vundle.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'Raimondi/delimitMate'
-Bundle "surround.vim"
-Bundle "repeat.vim"
-Bundle 'tpope/vim-fugitive'
-Bundle "bling/vim-airline"
-Bundle "spiiph/vim-space"
-Bundle "benmills/vimux"
-Bundle "petdance/vim-perl"
-Bundle 'tmhedberg/SimpylFold'
-Plugin 'nvie/vim-flake8'
-Plugin 'junegunn/fzf.vim'
-Plugin 'tpope/vim-projectionist'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'junegunn/vim-peekaboo'
-Plugin 'w0rp/ale'
-Plugin 'janko/vim-test'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-fugitive'
+Plug 'bling/vim-airline'
+Plug 'spiiph/vim-space'
+Plug 'benmills/vimux'
+Plug 'tmhedberg/SimpylFold'
+Plug 'nvie/vim-flake8'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
+Plug 'tpope/vim-projectionist'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-peekaboo'
+Plug 'w0rp/ale'
+Plug 'janko/vim-test'
 
 " Syntax Files
-Bundle "tpope/vim-markdown"
-Plugin 'bioSyntax/bioSyntax-vim'
-Bundle 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
-Bundle 'jtratner/vim-flavored-markdown'
-Plugin 'confluencewiki.vim'
+Plug 'tpope/vim-markdown'
+Plug 'bioSyntax/bioSyntax-vim'
+Plug 'docker/docker' , {'rtp': '/contrib/syntax/vim/'}
+Plug 'jtratner/vim-flavored-markdown'
 
 " Colour Schemes
-Bundle "altercation/vim-colors-solarized"
+Plug 'altercation/vim-colors-solarized'
 
-call vundle#end()
+call plug#end()
 
 syntax on                       " enable syntax highlighting
 filetype on                     " enable vim filetype detection
@@ -258,17 +216,6 @@ let delimitMate_expand_cr = 1                " expand <cr> inside empty delimite
 " airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#whitespace#enabled = 0
-
-" Gundo
-nnoremap <F6> :GundoToggle<CR>
-" open on the right
-let g:gundo_right = 1
-" a little wider for wider screens
-let g:gundo_width = 60
-
-" Gist
-let g:gist_detect_filetype = 1
-let g:gist_post_private = 1
 
  " Enable tabline ( part of airline )
 let g:airline#extensions#tabline#enabled = 0
@@ -316,3 +263,15 @@ let test#filename_modifier = ':p' " Full file path
 " OPEN FILES IN DIRECTORY OF CURRENT FILE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <Leader>ed :edit <C-R>=expand("%:p:h") . "/"<CR>
+
+
+" Triger `autoread` when files changes on disk
+" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+" https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+            \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+
+" Notification after file change
+" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
